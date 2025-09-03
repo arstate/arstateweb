@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { CloseIcon, SendIcon } from './icons';
@@ -29,6 +28,9 @@ const AskAI: React.FC = () => {
                     model: 'gemini-2.5-flash',
                     config: {
                         systemInstruction: `Anda adalah PICO AI, asisten AI untuk Arstate Cinema. Peran Anda adalah menjawab pertanyaan pengguna tentang layanan, portofolio, dan informasi kontak Arstate Cinema. Gunakan informasi di bawah ini sebagai basis pengetahuan Anda. Balas selalu dalam Bahasa Indonesia. Bersikaplah ramah, ringkas, dan profesional. Jangan menjawab pertanyaan yang tidak berhubungan dengan Arstate Cinema.
+
+**Tentang PICO AI**
+- PICO AI dikembangkan oleh Arstate Cinema, secara spesifik oleh BACHTIAR ARYANSYAH PUTRA, CEO Arstate Cinema.
 
 **Profil Perusahaan: Arstate Cinema**
 - **Slogan:** Mengabadikan Momen, Menciptakan Kenangan Abadi.
@@ -176,89 +178,112 @@ Kami selalu memiliki rencana cadangan. Kami akan berdiskusi dengan Anda untuk me
     const iconUrl = 'https://lh3.googleusercontent.com/pw/AP1GczO6lR058mUczCzaS2tWgOFkR0bu-MaoBWKjSFvlyqGoJPkzynPaiU1OUveUweWCJB3iT9mjAIJh7XJaENBZlfE21pY-WWd5YVKHl4lohMRxAPw_vT8=w2400';
 
     return (
-        <div 
-            className={`
-                fixed bottom-8 right-8 z-50
-                transition-all duration-500 ease-in-out origin-bottom-right
-                ${isOpen 
-                    ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-white/80 dark:bg-white/5 backdrop-blur-lg shadow-2xl shadow-gold/25 border-2 border-gold' 
-                    : 'w-16 h-16 rounded-[2rem] bg-white shadow-lg cursor-pointer transform hover:scale-110 hover:bg-gold hover:shadow-xl hover:shadow-gold/30'
-                }
-            `}
-            onClick={!isOpen ? toggleChat : undefined}
-        >
-            {/* Icon Container */}
-            <div className={`
-                absolute inset-0 flex items-center justify-center
-                transition-opacity duration-300
-                ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}
-            `}>
-                <img src={iconUrl} alt="PICO AI Icon" className="w-10 h-10 object-contain" />
+        <div className="group fixed bottom-8 right-8 z-50 flex items-end">
+            {/* AI Label */}
+            <div
+                className={`
+                    text-center mr-2
+                    transition-all duration-300 ease-in-out
+                    ${isOpen ? 'opacity-0 -translate-x-4 pointer-events-none' : 'opacity-100 translate-x-0'}
+                `}
+            >
+                <p className="text-2xl font-bold text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.15)] dark:[text-shadow:none] group-hover:text-gold transition-all duration-300 group-hover:drop-shadow-[0_1px_4px_rgba(255,193,7,0.5)]">
+                    AI.
+                </p>
             </div>
-
-            {/* Chat UI Container */}
-            <div className={`
-                w-full h-full flex flex-col
-                transition-opacity duration-300
-                ${isOpen ? 'opacity-100 delay-200' : 'opacity-0 pointer-events-none'} 
-            `}>
-                 {/* Header */}
-                <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-gray-200 dark:border-white/10">
-                    <div className="flex items-center space-x-4">
-                        <img src={iconUrl} alt="PICO AI Icon" className="w-12 h-12 object-contain" />
-                        <h3 className="font-bold text-navy dark:text-white text-2xl">Tanya PICO AI</h3>
-                    </div>
-                    <button onClick={toggleChat} className="p-1 text-gray-500 dark:text-gray-400 hover:text-gold transition-colors rounded-full">
-                        <CloseIcon />
-                    </button>
+            
+            {/* Button/Window Container */}
+            <div 
+                className={`
+                    relative
+                    transition-all duration-500 ease-in-out origin-bottom-right
+                    ${isOpen 
+                        ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-white/80 dark:bg-white/5 backdrop-blur-lg shadow-2xl shadow-gold/25 border-2 border-gold' 
+                        : 'w-16 h-16 rounded-[2rem] bg-white shadow-lg cursor-pointer transform group-hover:scale-110 group-hover:bg-gold group-hover:shadow-xl group-hover:shadow-gold/30'
+                    }
+                `}
+                onClick={!isOpen ? toggleChat : undefined}
+            >
+                {/* Icon Container */}
+                <div className={`
+                    absolute inset-0 flex items-center justify-center
+                    transition-opacity duration-300
+                    ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}
+                `}>
+                    <img src={iconUrl} alt="PICO AI Icon" className="w-10 h-10 object-contain" />
                 </div>
 
-                {/* Messages */}
-                <div className="flex-grow p-4 overflow-y-auto custom-scrollbar">
-                    <div className="flex flex-col space-y-4">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-xs md:max-w-sm rounded-xl px-4 py-2 ${
-                                    msg.role === 'user' 
-                                    ? 'bg-gold text-navy rounded-br-none' 
-                                    : 'bg-gray-200 text-navy dark:bg-white/10 dark:text-gray-300 rounded-bl-none'
-                                }`}>
-                                    <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
-                                </div>
-                            </div>
-                        ))}
-                        {isLoading && (
-                             <div className="flex justify-start">
-                                <div className="max-w-xs md:max-w-sm rounded-xl px-4 py-2 bg-gray-200 dark:bg-white/10 text-gray-300 rounded-bl-none flex items-center space-x-2">
-                                   <span className="h-2 w-2 bg-gold rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                                   <span className="h-2 w-2 bg-gold rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                                   <span className="h-2 w-2 bg-gold rounded-full animate-bounce"></span>
-                                </div>
-                            </div>
-                        )}
-                        <div ref={messagesEndRef} />
-                    </div>
-                </div>
-
-                {/* Input Form */}
-                <div className="flex-shrink-0 p-4 border-t border-gray-200 dark:border-white/10">
-                    <form onSubmit={handleSubmit} className="flex items-center space-x-2">
-                        <input
-                            type="text"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            placeholder="Tanya tentang layanan kami..."
-                            className="w-full bg-gray-100 border border-gray-300 text-navy dark:bg-white/10 dark:border-white/20 rounded-full py-2 px-4 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-gold transition-shadow"
-                            disabled={isLoading}
-                        />
-                        <button 
-                            type="submit" 
-                            className="p-3 rounded-full transition-colors bg-gold text-navy hover:bg-amber-500 disabled:bg-gray-300 disabled:text-gray-500" 
-                            disabled={isLoading || !inputValue.trim()}
-                        >
-                            <SendIcon />
+                {/* Chat UI Container */}
+                <div className={`
+                    w-full h-full flex flex-col
+                    transition-opacity duration-300
+                    ${isOpen ? 'opacity-100 delay-200' : 'opacity-0 pointer-events-none'} 
+                `}>
+                    {/* Header */}
+                    <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-gray-200 dark:border-white/10">
+                        <div className="flex items-center space-x-4">
+                            <img src={iconUrl} alt="PICO AI Icon" className="w-12 h-12 object-contain" />
+                            <h3 className="font-bold text-navy dark:text-white text-2xl">Tanya PICO AI</h3>
+                        </div>
+                        <button onClick={toggleChat} className="p-1 text-gray-500 dark:text-gray-400 hover:text-gold transition-colors rounded-full">
+                            <CloseIcon />
                         </button>
-                    </form>
+                    </div>
+
+                    {/* Messages */}
+                    <div className="flex-grow p-4 overflow-y-auto custom-scrollbar">
+                        <div className="flex flex-col space-y-4">
+                            {messages.map((msg, index) => (
+                                <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                    <div className={`max-w-xs md:max-w-sm rounded-xl px-4 py-2 ${
+                                        msg.role === 'user' 
+                                        ? 'bg-gold text-navy rounded-br-none' 
+                                        : 'bg-gray-200 text-navy dark:bg-white/10 dark:text-gray-300 rounded-bl-none'
+                                    }`}>
+                                        <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                                    </div>
+                                </div>
+                            ))}
+                            {isLoading && (
+                                <div className="flex justify-start">
+                                    <div className="max-w-xs md:max-w-sm rounded-xl px-4 py-2 bg-gray-200 dark:bg-white/10 text-gray-300 rounded-bl-none flex items-center space-x-2">
+                                    <span className="h-2 w-2 bg-gold rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                    <span className="h-2 w-2 bg-gold rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                                    <span className="h-2 w-2 bg-gold rounded-full animate-bounce"></span>
+                                    </div>
+                                </div>
+                            )}
+                            <div ref={messagesEndRef} />
+                        </div>
+                    </div>
+
+                    {/* Input Form */}
+                    <div className="flex-shrink-0 px-4 pt-3 pb-2 border-t border-gray-200 dark:border-white/10">
+                        <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                placeholder="Tanya tentang layanan kami..."
+                                className="w-full bg-gray-100 border border-gray-300 text-navy dark:bg-white/10 dark:border-white/20 rounded-full py-2 px-4 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-gold transition-shadow"
+                                disabled={isLoading}
+                            />
+                            <button 
+                                type="submit" 
+                                className="p-3 rounded-full transition-colors bg-gold text-navy hover:bg-amber-500 disabled:bg-gray-300 disabled:text-gray-500" 
+                                disabled={isLoading || !inputValue.trim()}
+                            >
+                                <SendIcon />
+                            </button>
+                        </form>
+                    </div>
+
+                    {/* Disclaimer */}
+                    <div className="flex-shrink-0 px-4 pb-3 text-center">
+                        <p className="text-xs text-gray-400 dark:text-gray-500">
+                            Informasi PICO AI tidak selalu akurat.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
