@@ -5,43 +5,60 @@ import { MoonIcon, SunIcon, MenuIcon } from './icons';
 interface HeaderProps {
   isDarkMode: boolean;
   toggleDarkMode: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  page: 'home' | 'about';
+  setPage: (page: 'home' | 'about') => void;
+  setScrollToSection: (sectionId: string | null) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
+const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPage, setScrollToSection }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { name: 'Beranda', href: '#' },
     { name: 'Layanan', href: '#layanan' },
     { name: 'Portofolio', href: '#karya-pilihan' },
+    { name: 'Tentang Kami', href: '/about' },
   ];
 
-  const handleLinkClick = () => {
-    setIsMobileMenuOpen(false);
-  };
-
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const href = e.currentTarget.getAttribute('href');
-    if (href) {
-      if (href === '#') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        const targetId = href.substring(1);
+    setIsMobileMenuOpen(false);
+
+    if (href === '/about') {
+      setPage('about');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+
+    if (href === '#') {
+       if (page === 'home') {
+           window.scrollTo({ top: 0, behavior: 'smooth' });
+       } else {
+           setPage('home');
+       }
+       return;
+    }
+    
+    if (href.startsWith('#')) {
+      const targetId = href.substring(1);
+      if (page === 'home') {
         const targetElement = document.getElementById(targetId);
         if (targetElement) {
           targetElement.scrollIntoView({ behavior: 'smooth' });
         }
+      } else {
+        setPage('home');
+        setScrollToSection(targetId);
       }
     }
-    handleLinkClick();
   };
+
 
   return (
     <header className="theme-transition-header sticky top-0 left-0 right-0 z-50 bg-gold/95 dark:bg-navy/80 backdrop-blur-md">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" onClick={handleSmoothScroll} className="text-2xl font-bold text-navy dark:text-white whitespace-nowrap transition-colors duration-300">
+          <a href="#" onClick={(e) => handleNavigation(e, '#')} className="text-2xl font-bold text-navy dark:text-white whitespace-nowrap transition-colors duration-300">
             Arstate <span className="text-navy dark:text-gold" style={{ filter: 'url(#scribble-filter)' }}>Cinema</span>
           </a>
           
@@ -52,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={handleSmoothScroll}
+                  onClick={(e) => handleNavigation(e, link.href)}
                   className="text-navy dark:text-white hover:text-white/80 dark:hover:text-gold transition-colors duration-300"
                 >
                   {link.name}
@@ -62,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
             <div className="flex items-center space-x-4">
               <a
                 href="#contact"
-                onClick={handleSmoothScroll}
+                onClick={(e) => handleNavigation(e, '#contact')}
                 className="px-5 py-2 text-navy dark:text-white border border-navy dark:border-gold rounded-full hover:bg-navy hover:text-white dark:hover:bg-gold dark:hover:text-navy transition-colors duration-300"
               >
                 Hubungi Kami
@@ -108,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={handleSmoothScroll}
+                  onClick={(e) => handleNavigation(e, link.href)}
                   className="text-navy dark:text-white hover:text-white/80 dark:hover:text-gold transition-colors duration-300 py-2 text-center"
                 >
                   {link.name}
@@ -116,7 +133,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
               ))}
                <a
                 href="#contact"
-                onClick={handleSmoothScroll}
+                onClick={(e) => handleNavigation(e, '#contact')}
                 className="w-full text-center mt-2 px-5 py-2 text-navy dark:text-white border border-navy dark:border-gold rounded-full hover:bg-navy hover:text-white dark:hover:bg-gold dark:hover:text-navy transition-colors duration-300"
               >
                 Hubungi Kami

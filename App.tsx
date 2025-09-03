@@ -14,6 +14,7 @@ import AboutPage from './components/AboutPage';
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [page, setPage] = useState<'home' | 'about'>('home');
+  const [scrollToSection, setScrollToSection] = useState<string | null>(null);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -22,6 +23,21 @@ const App: React.FC = () => {
       document.documentElement.classList.remove('dark');
     }
   }, [isDarkMode]);
+
+  // Effect to handle scrolling to a section after the page has changed to 'home'
+  useEffect(() => {
+    if (page === 'home' && scrollToSection) {
+      const timer = setTimeout(() => { // Timeout allows the home page components to render first
+        const element = document.getElementById(scrollToSection);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+        setScrollToSection(null); // Reset after scrolling
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [page, scrollToSection]);
+
 
   const toggleDarkMode = (event: React.MouseEvent<HTMLButtonElement>) => {
     const header = document.querySelector('.theme-transition-header');
@@ -68,22 +84,28 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen text-gray-700 dark:text-gray-300 font-sans bg-white dark:bg-navy transition-colors duration-1000">
-      {page === 'home' ? (
-        <>
-          <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-          <main>
+      <Header 
+        isDarkMode={isDarkMode} 
+        toggleDarkMode={toggleDarkMode}
+        page={page}
+        setPage={setPage}
+        setScrollToSection={setScrollToSection}
+      />
+      <main>
+        {page === 'home' ? (
+          <>
             <Hero />
             <TrustedBy />
             <Services />
             <FeaturedWork />
             <Qualities isDarkMode={isDarkMode} />
             <Contact onNavigateToAbout={() => setPage('about')} />
-          </main>
-          <Footer />
-        </>
-      ) : (
-        <AboutPage onBack={() => setPage('home')} isDarkMode={isDarkMode} />
-      )}
+          </>
+        ) : (
+          <AboutPage isDarkMode={isDarkMode} />
+        )}
+      </main>
+      <Footer />
       <AskAI />
     </div>
   );

@@ -1,9 +1,7 @@
 
 import React, { useState } from 'react';
-import { ChevronLeftIcon } from './icons';
 
 interface AboutPageProps {
-  onBack: () => void;
   isDarkMode: boolean;
 }
 
@@ -44,7 +42,7 @@ const philosophies = [
 ];
 
 
-const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
+const AboutPage: React.FC<AboutPageProps> = ({ isDarkMode }) => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     React.useEffect(() => {
@@ -62,19 +60,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
                 animation: fadeIn 0.5s ease-in-out;
             }
         `}</style>
-      <header className="relative py-6 px-6">
-        <button
-          onClick={onBack}
-          className="absolute top-1/2 -translate-y-1/2 left-6 z-10 flex items-center space-x-2 text-gold hover:text-amber-500 transition-colors duration-300 font-semibold"
-          aria-label="Kembali ke beranda"
-        >
-          <ChevronLeftIcon />
-          <span>Kembali</span>
-        </button>
-      </header>
       
       <main className="container mx-auto px-6 py-24">
-        <section className="text-center mb-20">
+        <section className="text-center mb-20 pt-12">
           <h1 className="text-4xl md:text-6xl font-bold text-navy dark:text-white mb-4 transition-colors duration-1000">
             Tentang <span className="text-gold" style={{ filter: 'url(#scribble-filter)' }}>Arstate Cinema</span>
           </h1>
@@ -142,12 +130,6 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
             </div>
         </section>
       </main>
-      
-      <footer className="border-t border-gray-200 dark:border-white/10 py-8 transition-colors duration-1000">
-            <div className="container mx-auto px-6 text-center text-gray-500">
-                <p>&copy; {new Date().getFullYear()} Arstate Cinema. All Rights Reserved.</p>
-            </div>
-      </footer>
     </div>
   );
 };
