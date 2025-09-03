@@ -47,32 +47,49 @@ const featuredProjects = [
 ];
 
 const FeaturedWork: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(2);
+  const originalLength = featuredProjects.length;
+  const [slides, setSlides] = useState([...featuredProjects, ...featuredProjects, ...featuredProjects]);
+  const [activeIndex, setActiveIndex] = useState(originalLength);
+  const [transitionDuration, setTransitionDuration] = useState(500);
   const autoplayRef = useRef<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
 
   const goToNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % featuredProjects.length);
+    setActiveIndex((prevIndex) => prevIndex + 1);
   };
 
   const goToPrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + featuredProjects.length) % featuredProjects.length);
+    setActiveIndex((prevIndex) => prevIndex - 1);
   };
 
   const goToSlide = (index: number) => {
-    setActiveIndex(index);
+    setActiveIndex(originalLength + index);
   };
-  
-  // FIX: Explicitly use `window.setInterval` and `window.clearInterval`
-  // to avoid type conflicts with NodeJS.Timeout in some TypeScript environments.
+
+  useEffect(() => {
+    if (activeIndex >= originalLength * 2 || activeIndex < originalLength) {
+      const timer = setTimeout(() => {
+        setTransitionDuration(0);
+        const newIndex = (activeIndex % originalLength) + originalLength;
+        setActiveIndex(newIndex);
+        
+        setTimeout(() => {
+          setTransitionDuration(500);
+        }, 50);
+
+      }, 500); // Must be equal to transition duration
+      return () => clearTimeout(timer);
+    }
+  }, [activeIndex]);
+
   const startAutoplay = () => {
-     if (autoplayRef.current) window.clearInterval(autoplayRef.current);
-     autoplayRef.current = window.setInterval(goToNext, 4000);
-  }
+    if (autoplayRef.current) window.clearInterval(autoplayRef.current);
+    autoplayRef.current = window.setInterval(goToNext, 4000);
+  };
 
   const stopAutoplay = () => {
-     if (autoplayRef.current) window.clearInterval(autoplayRef.current);
-  }
+    if (autoplayRef.current) window.clearInterval(autoplayRef.current);
+  };
 
   useEffect(() => {
     if (!isPaused) {
@@ -99,22 +116,23 @@ const FeaturedWork: React.FC = () => {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div className="relative w-full h-full flex items-center justify-center">
-          {featuredProjects.map((project, index) => {
+          {slides.map((project, index) => {
              const offset = index - activeIndex;
              const isCenter = index === activeIndex;
 
              const transformStyle = {
                transform: `translateX(${offset * 90}%) scale(${isCenter ? 1 : 0.7})`,
-               zIndex: featuredProjects.length - Math.abs(offset),
-               opacity: Math.abs(offset) <= 2 ? 1 : 0,
+               zIndex: slides.length - Math.abs(offset),
+               opacity: 1,
                filter: isCenter ? 'blur(0px)' : 'blur(4px)',
-               pointerEvents: isCenter ? 'auto' : 'none' as React.CSSProperties['pointerEvents']
+               pointerEvents: isCenter ? 'auto' : 'none' as React.CSSProperties['pointerEvents'],
+               transition: `all ${transitionDuration}ms ease-in-out`
              };
 
             return (
               <div
                 key={index}
-                className="absolute w-[60%] sm:w-[45%] md:w-[35%] lg:w-[25%] aspect-[2/3] max-w-[320px] transition-all duration-500 ease-in-out cursor-pointer"
+                className="absolute w-[60%] sm:w-[45%] md:w-[35%] lg:w-[25%] aspect-[2/3] max-w-[320px] cursor-pointer"
                 style={transformStyle}
               >
                 <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
@@ -144,7 +162,7 @@ const FeaturedWork: React.FC = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${activeIndex === index ? 'bg-gold scale-125' : 'bg-white/20 hover:bg-white/40'}`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${(activeIndex % originalLength) === index ? 'bg-gold scale-125' : 'bg-white/20 hover:bg-white/40'}`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
