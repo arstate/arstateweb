@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { MoonIcon, SunIcon, MenuIcon } from './icons';
 
 interface HeaderProps {
@@ -8,13 +8,22 @@ interface HeaderProps {
   page: 'home' | 'about';
   setPage: (page: 'home' | 'about') => void;
   setScrollToSection: (sectionId: string | null) => void;
+  smoothScrollTo: (id: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPage, setScrollToSection }) => {
+const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPage, setScrollToSection, smoothScrollTo }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+  const [magicLineStyle, setMagicLineStyle] = useState({
+    opacity: 0,
+    width: 0,
+    height: 0,
+    transform: 'translateX(0px)',
+  });
+
 
   const navLinks = [
-    { name: 'Beranda', href: '#' },
+    { name: 'Beranda', href: '#home' },
     { name: 'Layanan', href: '#layanan' },
     { name: 'Portofolio', href: '#karya-pilihan' },
     { name: 'Tentang Kami', href: '/about' },
@@ -29,28 +38,32 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPa
       window.scrollTo({ top: 0, behavior: 'auto' });
       return;
     }
-
-    if (href === '#') {
-       if (page === 'home') {
-           window.scrollTo({ top: 0, behavior: 'smooth' });
-       } else {
-           setPage('home');
-       }
-       return;
-    }
     
     if (href.startsWith('#')) {
       const targetId = href.substring(1);
       if (page === 'home') {
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
-        }
+        smoothScrollTo(targetId);
       } else {
         setPage('home');
         setScrollToSection(targetId);
       }
     }
+  };
+  
+  const handleLinkHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isDarkMode || !navRef.current) return;
+    const linkEl = e.currentTarget;
+    setMagicLineStyle({
+      opacity: 1,
+      width: linkEl.offsetWidth,
+      height: linkEl.offsetHeight,
+      transform: `translateX(${linkEl.offsetLeft}px)`,
+    });
+  };
+
+  const handleNavLeave = () => {
+    if (!isDarkMode) return;
+    setMagicLineStyle(prev => ({ ...prev, opacity: 0 }));
   };
 
 
@@ -58,32 +71,47 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPa
     <header className="theme-transition-header sticky top-0 left-0 right-0 z-50 bg-gold/95 dark:bg-navy/80 backdrop-blur-md">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" onClick={(e) => handleNavigation(e, '#')} className="text-2xl font-bold text-navy dark:text-white whitespace-nowrap transition-colors duration-300">
+          <a href="#home" onClick={(e) => handleNavigation(e, '#home')} className="text-2xl font-bold text-navy dark:text-white whitespace-nowrap transition-colors duration-300">
             Arstate <span className="text-navy dark:text-gold" style={{ filter: 'url(#scribble-filter)' }}>Cinema</span>
           </a>
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            <nav className="flex items-center space-x-6 lg:space-x-8">
+            <nav 
+              ref={navRef}
+              onMouseLeave={handleNavLeave}
+              className="relative flex items-center space-x-6 lg:space-x-8"
+            >
+              {isDarkMode && (
+                <span
+                  className="absolute bg-gold rounded-full pointer-events-none"
+                  style={{
+                    ...magicLineStyle,
+                    transition: 'all 300ms ease-in-out',
+                  }}
+                />
+              )}
               {navLinks.map(link => (
                 <a
                   key={link.name}
                   href={link.href}
+                  onMouseEnter={handleLinkHover}
                   onClick={(e) => handleNavigation(e, link.href)}
-                  className="text-navy dark:text-white hover:text-white/80 dark:hover:text-gold transition-colors duration-300"
+                  className="relative z-10 text-navy dark:text-white dark:hover:text-navy transition-colors duration-150 py-1 px-3"
                 >
                   {link.name}
                 </a>
               ))}
-            </nav>
-            <div className="flex items-center space-x-4">
-              <a
+               <a
                 href="#contact"
+                onMouseEnter={handleLinkHover}
                 onClick={(e) => handleNavigation(e, '#contact')}
-                className="px-5 py-2 text-navy dark:text-white border border-navy dark:border-gold rounded-full hover:bg-navy hover:text-white dark:hover:bg-gold dark:hover:text-navy transition-colors duration-300"
+                className="relative z-10 px-5 py-2 text-navy dark:text-white border border-navy dark:border-gold rounded-full hover:bg-navy hover:text-white dark:hover:bg-transparent dark:hover:text-navy transition-colors duration-300"
               >
                 Hubungi Kami
               </a>
+            </nav>
+            <div className="flex items-center">
               <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-full text-navy dark:text-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50"

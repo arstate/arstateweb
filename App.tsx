@@ -24,14 +24,50 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
+  const smoothScrollTo = (id: string, duration = 1500) => {
+    const targetElement = document.getElementById(id);
+    if (!targetElement) {
+        if (id === 'home') { // Special case for top of the page
+             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        return;
+    }
+
+    const header = document.querySelector('header');
+    const headerHeight = header ? header.offsetHeight : 0;
+    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    let startTime: number | null = null;
+
+    const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+    };
+
+    const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const nextScrollPosition = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+        window.scrollTo(0, nextScrollPosition);
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+        } else {
+            window.scrollTo(0, targetPosition);
+        }
+    };
+
+    requestAnimationFrame(animation);
+  };
+
+
   // Effect to handle scrolling to a section after the page has changed to 'home'
   useEffect(() => {
     if (page === 'home' && scrollToSection) {
       const timer = setTimeout(() => { // Timeout allows the home page components to render first
-        const element = document.getElementById(scrollToSection);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+        smoothScrollTo(scrollToSection);
         setScrollToSection(null); // Reset after scrolling
       }, 100);
       return () => clearTimeout(timer);
@@ -90,11 +126,12 @@ const App: React.FC = () => {
         page={page}
         setPage={setPage}
         setScrollToSection={setScrollToSection}
+        smoothScrollTo={smoothScrollTo}
       />
       <main>
         {page === 'home' ? (
           <>
-            <Hero />
+            <Hero smoothScrollTo={smoothScrollTo}/>
             <TrustedBy />
             <Services />
             <FeaturedWork />
@@ -105,7 +142,7 @@ const App: React.FC = () => {
           <AboutPage isDarkMode={isDarkMode} />
         )}
       </main>
-      <Footer />
+      <Footer smoothScrollTo={smoothScrollTo} />
       <AskAI />
     </div>
   );
