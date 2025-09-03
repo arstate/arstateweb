@@ -128,3 +128,16 @@ export const SparklesIcon: React.FC<{ className?: string }> = ({ className }) =>
         <path d="M12 2.5l1.09 2.65 2.65 1.09-2.65 1.09L12 9.5l-1.09-2.65L8.26 5.74l2.65-1.09L12 2.5zM6 8l1.36 3.25L10.5 12.5l-3.14 1.25L6 17l-1.36-3.25L1.5 12.5l3.14-1.25L6 8zm12 6l-1.09 2.65-2.65 1.09 2.65 1.09L18 21.5l1.09-2.65L21.74 18l-2.65-1.09L18 14z" />
     </svg>
 );
+
+export const MenuIcon: React.FC = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+);
