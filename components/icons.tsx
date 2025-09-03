@@ -104,19 +104,10 @@ export const TwitterIcon: React.FC = () => (
     </svg>
 );
 
-export const WavyRopeIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 10 40"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
-    preserveAspectRatio="none"
-    strokeLinecap="round"
-  >
-    <path d="M5 0 L2 5 L8 10 L2 15 L8 20 L2 25 L8 30 L2 35 L5 40" />
-  </svg>
+export const ChatBubbleIcon: React.FC = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
 );
 
 export const SendIcon: React.FC = () => (
