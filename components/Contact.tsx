@@ -1,8 +1,15 @@
 
 import React from 'react';
-import { ChatBubbleIcon } from './icons';
 
 const Contact: React.FC = () => {
+
+  const whatsappMessage = `Halo kakk
+Saya menemukan jasa dari Arstate Cinema melalui instagram & website dan tertarik untuk menggunakan jasa fotografi/videografi.
+Mohon informasinya mengenai paket dan pricelist yang sesuai.
+Terima kasih.`;
+
+  const whatsappUrl = `https://wa.me/6289617323344?text=${encodeURIComponent(whatsappMessage)}`;
+
   return (
     <section id="contact" className="py-24 bg-navy">
       <div className="container mx-auto px-6 text-center">
@@ -20,13 +27,12 @@ const Contact: React.FC = () => {
             Info Selengkapnya
           </a>
           <a
-            href="https://wa.me/621234567890" // Example WhatsApp link, replace with actual number
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto flex items-center justify-center px-8 py-3 bg-gold text-navy font-bold rounded-full hover:bg-amber-500 transform hover:scale-105 transition-all duration-300"
+            className="w-full sm:w-auto text-center px-8 py-3 bg-whatsapp-green text-white font-bold rounded-full hover:bg-gold hover:text-navy hover:shadow-lg hover:shadow-gold/50 transform hover:scale-105 transition-all duration-300"
           >
-            <ChatBubbleIcon />
-            Hubungi Kami Sekarang
+            Chat Via WhatsApp
           </a>
         </div>
       </div>
