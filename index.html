@@ -53,14 +53,25 @@
       background-color: #e6af06; /* slightly darker gold */
     }
 
-    /* View Transition API styles for theme change */
+    /* --- View Transition API styles for theme change --- */
+    
+    @keyframes fade-out-animation {
+      to { opacity: 0; }
+    }
+
     .theme-transition-header {
       /* Assign a name to the header for the transition */
       view-transition-name: main-header;
     }
 
-    /* Disable the default fade animation, we are using clip-path */
-    ::view-transition-old(main-header),
+    /* Fade out the old header smoothly, but with a delay */
+    ::view-transition-old(main-header) {
+      animation: fade-out-animation 600ms ease-in-out forwards;
+      animation-delay: 600ms; /* Start fading after the reveal is halfway */
+      mix-blend-mode: normal;
+    }
+
+    /* Disable the default animation for the new header, we animate its clip-path in JS */
     ::view-transition-new(main-header) {
       animation: none;
       mix-blend-mode: normal; /* Avoids weird color blending */
@@ -90,7 +101,7 @@
 }
 </script>
 </head>
-  <body class="bg-white dark:bg-navy transition-colors duration-300">
+  <body class="bg-white dark:bg-navy transition-colors duration-1000">
     <svg style="display:none;" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="scribble-filter">

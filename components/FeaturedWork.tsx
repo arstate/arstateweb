@@ -101,12 +101,12 @@ const FeaturedWork: React.FC = () => {
   
 
   return (
-    <section id="karya-pilihan" className="pt-40 pb-20 bg-gray-50 dark:bg-navy/50 overflow-hidden transition-colors duration-300">
+    <section id="karya-pilihan" className="pt-40 pb-20 bg-gray-50 dark:bg-navy/50 overflow-hidden transition-colors duration-1000">
       <div className="container mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-navy dark:text-white mb-4 transition-colors duration-300">
+        <h2 className="text-3xl md:text-4xl font-bold text-navy dark:text-white mb-4 transition-colors duration-1000">
           Karya Pilihan Kami
         </h2>
-        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-4 transition-colors duration-300">
+        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-4 transition-colors duration-1000">
           Beberapa momen favorit yang telah kami abadikan. Setiap frame menceritakan sebuah kisah unik.
         </p>
       </div>

@@ -58,7 +58,7 @@ const App: React.FC = () => {
           ],
         },
         {
-          duration: 700,
+          duration: 1200,
           easing: 'ease-in-out',
           pseudoElement: '::view-transition-new(main-header)',
         }
@@ -67,7 +67,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen text-gray-700 dark:text-gray-300 font-sans bg-white dark:bg-navy transition-colors duration-300">
+    <div className="min-h-screen text-gray-700 dark:text-gray-300 font-sans bg-white dark:bg-navy transition-colors duration-1000">
       {page === 'home' ? (
         <>
           <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />

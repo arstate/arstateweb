@@ -241,7 +241,7 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
     }, [isDarkMode]);
 
     return (
-         <section className="py-20 bg-white dark:bg-navy overflow-hidden transition-colors duration-300">
+         <section className="py-20 bg-white dark:bg-navy overflow-hidden transition-colors duration-1000">
             <div className="container mx-auto px-6 h-[80vh] relative">
                 <div className="w-full h-full" ref={sceneRef} />
             </div>

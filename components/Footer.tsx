@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
     };
 
     return (
-        <footer className="bg-gray-100 dark:bg-navy/50 border-t border-gray-200 dark:border-white/10 pt-16 pb-8 transition-colors duration-300">
+        <footer className="bg-gray-100 dark:bg-navy/50 border-t border-gray-200 dark:border-white/10 pt-16 pb-8 transition-colors duration-1000">
             <div className="container mx-auto px-6">
                 <div className="grid md:grid-cols-3 gap-8">
                     {/* Brand Info */}
