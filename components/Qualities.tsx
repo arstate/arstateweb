@@ -57,12 +57,14 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
             });
             renderRef.current = render;
 
-            const darkThemeTextColor = '#0a192f';
-            const lightThemeTextColor = '#e5e7eb';
+            const lightThemeTextColor = '#E5E7EB'; // e.g., gray-200
+            const darkThemeTextColor = '#0B1B34'; // e.g., navy
             const bubbleColor = '#FFC107';
             const ropeColor = '#FFC107';
             
-            const bodyTextColor = document.body.classList.contains('light-mode') ? darkThemeTextColor : lightThemeTextColor;
+            // Text inside bubbles should always be dark for contrast against gold background.
+            const bodyTextColor = darkThemeTextColor; 
+            const titleTextColor = isDarkMode ? lightThemeTextColor : darkThemeTextColor;
 
             const wallThickness = 100;
             const walls = [
@@ -100,7 +102,7 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                 text
             ));
             
-            const titleOptions = { isTitle: true, paddingX: 10, paddingY: 10, customFillStyle: lightThemeTextColor };
+            const titleOptions = { isTitle: true, paddingX: 10, paddingY: 10, customFillStyle: titleTextColor };
             const title1 = createBody(0, 0, 'Kualitas Kami', { ...titleOptions, font: `bold ${isMobile ? 24 : 40}px Poppins` });
             const title2 = createBody(0, 0, 'Dalam', { ...titleOptions, font: `bold ${isMobile ? 24 : 40}px Poppins` });
             const title3 = createBody(0, 0, 'Setiap Proyek', { ...titleOptions, font: `bold ${isMobile ? 24 : 40}px Poppins` });
@@ -196,7 +198,7 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                 context.textBaseline = 'middle';
                 for (const body of bodies) {
                     if (body.customText) {
-                        const effectiveFillStyle = body.isTitle ? lightThemeTextColor : (document.body.classList.contains('light-mode') ? darkThemeTextColor : lightThemeTextColor)
+                        const effectiveFillStyle = body.isTitle ? titleTextColor : bodyTextColor;
                         context.save();
                         context.translate(body.position.x, body.position.y);
                         context.rotate(body.angle);
@@ -239,7 +241,7 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
     }, [isDarkMode]);
 
     return (
-         <section className="py-20 bg-navy dark:bg-navy overflow-hidden">
+         <section className="py-20 bg-white dark:bg-navy overflow-hidden transition-colors duration-300">
             <div className="container mx-auto px-6 h-[80vh] relative">
                 <div className="w-full h-full" ref={sceneRef} />
             </div>

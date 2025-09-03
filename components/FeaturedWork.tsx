@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from './icons';
 
@@ -100,12 +101,12 @@ const FeaturedWork: React.FC = () => {
   
 
   return (
-    <section id="karya-pilihan" className="pt-40 pb-20 bg-navy/50 overflow-hidden">
+    <section id="karya-pilihan" className="pt-40 pb-20 bg-gray-50 dark:bg-navy/50 overflow-hidden transition-colors duration-300">
       <div className="container mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-navy dark:text-white mb-4 transition-colors duration-300">
           Karya Pilihan Kami
         </h2>
-        <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-4">
+        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-4 transition-colors duration-300">
           Beberapa momen favorit yang telah kami abadikan. Setiap frame menceritakan sebuah kisah unik.
         </p>
       </div>
@@ -154,7 +155,7 @@ const FeaturedWork: React.FC = () => {
       </div>
       
       <div className="relative flex items-center justify-center -mt-4 space-x-4 z-10">
-        <button onClick={goToPrev} className="p-2 rounded-full text-white bg-white/10 hover:bg-gold hover:text-navy transition-colors duration-300" aria-label="Previous Slide">
+        <button onClick={goToPrev} className="p-2 rounded-full text-navy dark:text-white bg-gray-200/50 dark:bg-white/10 hover:bg-gold hover:text-navy dark:hover:text-navy transition-colors duration-300" aria-label="Previous Slide">
             <ChevronLeftIcon />
         </button>
         <div className="flex items-center justify-center space-x-3">
@@ -162,12 +163,12 @@ const FeaturedWork: React.FC = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${(activeIndex % originalLength) === index ? 'bg-gold scale-125' : 'bg-white/20 hover:bg-white/40'}`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${(activeIndex % originalLength) === index ? 'bg-gold scale-125' : 'bg-gray-400/50 dark:bg-white/20 hover:bg-white/40'}`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
-        <button onClick={goToNext} className="p-2 rounded-full text-white bg-white/10 hover:bg-gold hover:text-navy transition-colors duration-300" aria-label="Next Slide">
+        <button onClick={goToNext} className="p-2 rounded-full text-navy dark:text-white bg-gray-200/50 dark:bg-white/10 hover:bg-gold hover:text-navy dark:hover:text-navy transition-colors duration-300" aria-label="Next Slide">
             <ChevronRightIcon />
         </button>
       </div>

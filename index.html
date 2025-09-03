@@ -52,6 +52,32 @@
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
       background-color: #e6af06; /* slightly darker gold */
     }
+
+    /* View Transition API styles for theme change */
+    .theme-transition-header {
+      /* Assign a name to the header for the transition */
+      view-transition-name: main-header;
+    }
+
+    /* Disable the default fade animation, we are using clip-path */
+    ::view-transition-old(main-header),
+    ::view-transition-new(main-header) {
+      animation: none;
+      mix-blend-mode: normal; /* Avoids weird color blending */
+    }
+    
+    /*
+      Force opaque background colors for the transition snapshots
+      to avoid transparency issues over the old background.
+    */
+    /* Light mode destination color */
+    ::view-transition-new(main-header) {
+      background: #FFC107;
+    }
+    /* Dark mode destination color */
+    .dark::view-transition-new(main-header) {
+      background: #0B1B34;
+    }
   </style>
   <script type="importmap">
 {

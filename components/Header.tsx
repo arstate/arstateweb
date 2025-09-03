@@ -4,7 +4,7 @@ import { MoonIcon, SunIcon, MenuIcon } from './icons';
 
 interface HeaderProps {
   isDarkMode: boolean;
-  toggleDarkMode: () => void;
+  toggleDarkMode: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
@@ -38,11 +38,11 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
   };
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-50 bg-navy/80 backdrop-blur-md">
+    <header className="theme-transition-header sticky top-0 left-0 right-0 z-50 bg-gold/95 dark:bg-navy/80 backdrop-blur-md">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" onClick={handleSmoothScroll} className="text-2xl font-bold text-white whitespace-nowrap">
-            Arstate <span className="text-gold" style={{ filter: 'url(#scribble-filter)' }}>Cinema</span>
+          <a href="#" onClick={handleSmoothScroll} className="text-2xl font-bold text-navy dark:text-white whitespace-nowrap transition-colors duration-300">
+            Arstate <span className="text-navy dark:text-gold" style={{ filter: 'url(#scribble-filter)' }}>Cinema</span>
           </a>
           
           {/* Desktop Menu */}
@@ -53,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                   key={link.name}
                   href={link.href}
                   onClick={handleSmoothScroll}
-                  className="text-white hover:text-gold transition-colors duration-300"
+                  className="text-navy dark:text-white hover:text-white/80 dark:hover:text-gold transition-colors duration-300"
                 >
                   {link.name}
                 </a>
@@ -63,13 +63,13 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
               <a
                 href="#contact"
                 onClick={handleSmoothScroll}
-                className="px-5 py-2 text-white border border-gold rounded-full hover:bg-gold hover:text-navy transition-colors duration-300"
+                className="px-5 py-2 text-navy dark:text-white border border-navy dark:border-gold rounded-full hover:bg-navy hover:text-white dark:hover:bg-gold dark:hover:text-navy transition-colors duration-300"
               >
                 Hubungi Kami
               </a>
               <button
                 onClick={toggleDarkMode}
-                className="p-2 rounded-full text-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50"
+                className="p-2 rounded-full text-navy dark:text-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50"
                 aria-label="Toggle dark mode"
               >
                 {isDarkMode ? <SunIcon /> : <MoonIcon />}
@@ -81,14 +81,14 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
           <div className="flex items-center md:hidden space-x-2">
              <button
                 onClick={toggleDarkMode}
-                className="p-2 rounded-full text-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50"
+                className="p-2 rounded-full text-navy dark:text-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50"
                 aria-label="Toggle dark mode"
               >
                 {isDarkMode ? <SunIcon /> : <MoonIcon />}
               </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-white hover:text-gold focus:outline-none focus:ring-2 focus:ring-gold"
+              className="p-2 rounded-md text-navy dark:text-white hover:text-gold focus:outline-none focus:ring-2 focus:ring-gold"
               aria-label="Toggle mobile menu"
             >
               <MenuIcon />
@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
       
       {/* Mobile Dropdown Menu */}
       <div className={`
-        absolute top-full left-0 w-full bg-navy/95 backdrop-blur-md md:hidden
+        absolute top-full left-0 w-full bg-gold/95 dark:bg-navy/95 backdrop-blur-md md:hidden
         transition-all duration-300 ease-in-out overflow-hidden
         ${isMobileMenuOpen ? 'max-h-96 shadow-lg' : 'max-h-0'}
       `}>
@@ -109,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                   key={link.name}
                   href={link.href}
                   onClick={handleSmoothScroll}
-                  className="text-white hover:text-gold transition-colors duration-300 py-2 text-center"
+                  className="text-navy dark:text-white hover:text-white/80 dark:hover:text-gold transition-colors duration-300 py-2 text-center"
                 >
                   {link.name}
                 </a>
@@ -117,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                <a
                 href="#contact"
                 onClick={handleSmoothScroll}
-                className="w-full text-center mt-2 px-5 py-2 text-white border border-gold rounded-full hover:bg-gold hover:text-navy transition-colors duration-300"
+                className="w-full text-center mt-2 px-5 py-2 text-navy dark:text-white border border-navy dark:border-gold rounded-full hover:bg-navy hover:text-white dark:hover:bg-gold dark:hover:text-navy transition-colors duration-300"
               >
                 Hubungi Kami
               </a>

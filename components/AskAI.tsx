@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { CloseIcon, SendIcon } from './icons';
@@ -89,7 +90,7 @@ const AskAI: React.FC = () => {
                 fixed bottom-8 right-8 z-50
                 transition-all duration-500 ease-in-out origin-bottom-right
                 ${isOpen 
-                    ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-white/5 backdrop-blur-lg shadow-2xl shadow-gold/25 border-2 border-gold' 
+                    ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-white/80 dark:bg-white/5 backdrop-blur-lg shadow-2xl shadow-gold/25 border-2 border-gold' 
                     : 'w-16 h-16 rounded-[2rem] bg-white shadow-lg cursor-pointer transform hover:scale-110 hover:bg-gold hover:shadow-xl hover:shadow-gold/30'
                 }
             `}
@@ -111,12 +112,12 @@ const AskAI: React.FC = () => {
                 ${isOpen ? 'opacity-100 delay-200' : 'opacity-0 pointer-events-none'} 
             `}>
                  {/* Header */}
-                <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-white/10">
+                <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-gray-200 dark:border-white/10">
                     <div className="flex items-center space-x-4">
                         <img src={iconUrl} alt="Arstate AI Icon" className="w-12 h-12 object-contain" />
-                        <h3 className="font-bold text-white text-2xl">Tanya Arstate AI</h3>
+                        <h3 className="font-bold text-navy dark:text-white text-2xl">Tanya Arstate AI</h3>
                     </div>
-                    <button onClick={toggleChat} className="p-1 text-gray-400 hover:text-gold transition-colors rounded-full">
+                    <button onClick={toggleChat} className="p-1 text-gray-500 dark:text-gray-400 hover:text-gold transition-colors rounded-full">
                         <CloseIcon />
                     </button>
                 </div>
@@ -129,7 +130,7 @@ const AskAI: React.FC = () => {
                                 <div className={`max-w-xs md:max-w-sm rounded-xl px-4 py-2 ${
                                     msg.role === 'user' 
                                     ? 'bg-gold text-navy rounded-br-none' 
-                                    : 'bg-white/10 text-gray-300 rounded-bl-none'
+                                    : 'bg-gray-200 text-navy dark:bg-white/10 dark:text-gray-300 rounded-bl-none'
                                 }`}>
                                     <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
                                 </div>
@@ -137,7 +138,7 @@ const AskAI: React.FC = () => {
                         ))}
                         {isLoading && (
                              <div className="flex justify-start">
-                                <div className="max-w-xs md:max-w-sm rounded-xl px-4 py-2 bg-white/10 text-gray-300 rounded-bl-none flex items-center space-x-2">
+                                <div className="max-w-xs md:max-w-sm rounded-xl px-4 py-2 bg-gray-200 dark:bg-white/10 text-gray-300 rounded-bl-none flex items-center space-x-2">
                                    <span className="h-2 w-2 bg-gold rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                                    <span className="h-2 w-2 bg-gold rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                                    <span className="h-2 w-2 bg-gold rounded-full animate-bounce"></span>
@@ -149,14 +150,14 @@ const AskAI: React.FC = () => {
                 </div>
 
                 {/* Input Form */}
-                <div className="flex-shrink-0 p-4 border-t border-white/10">
+                <div className="flex-shrink-0 p-4 border-t border-gray-200 dark:border-white/10">
                     <form onSubmit={handleSubmit} className="flex items-center space-x-2">
                         <input
                             type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             placeholder="Tanya tentang layanan kami..."
-                            className="w-full bg-white/10 border border-white/20 rounded-full py-2 px-4 text-white text-sm focus:outline-none focus:ring-2 focus:ring-gold transition-shadow"
+                            className="w-full bg-gray-100 border border-gray-300 text-navy dark:bg-white/10 dark:border-white/20 rounded-full py-2 px-4 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-gold transition-shadow"
                             disabled={isLoading}
                         />
                         <button 

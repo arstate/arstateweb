@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const clientLogos = [
@@ -27,10 +28,10 @@ const TrustedBy: React.FC = () => {
   return (
     <section className="pt-40 pb-20 overflow-x-hidden">
       <div className="container mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-navy dark:text-white mb-4 transition-colors duration-300">
           Telah Dipercaya Oleh
         </h2>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto transition-colors duration-300">
           Kami bangga telah menjadi bagian dari cerita sukses berbagai klien dan acara.
         </p>
       </div>
@@ -48,7 +49,7 @@ const TrustedBy: React.FC = () => {
           {[...clientLogos, ...clientLogos].map((logo, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-36 h-36 mx-4 my-10 flex items-center justify-center bg-white p-4 rounded-2xl border-2 border-sky-300 transition-all duration-300 ease-in-out hover:border-gold hover:shadow-xl hover:shadow-gold/30 hover:-translate-y-2"
+              className="flex-shrink-0 w-36 h-36 mx-4 my-10 flex items-center justify-center bg-gray-50 dark:bg-white p-4 rounded-2xl border-2 border-sky-300 transition-all duration-300 ease-in-out hover:border-gold hover:shadow-xl hover:shadow-gold/30 hover:-translate-y-2"
               title={`Client ${index + 1}`}
             >
               <img src={logo} alt={`Client logo ${index + 1}`} className="h-24 w-full object-contain pointer-events-none" />

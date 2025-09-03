@@ -52,7 +52,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
     }, []);
 
   return (
-    <div className="min-h-screen text-gray-300 font-sans bg-navy animate-fadeIn">
+    <div className="min-h-screen text-gray-700 dark:text-gray-300 font-sans bg-white dark:bg-navy animate-fadeIn transition-colors duration-300">
         <style>{`
             @keyframes fadeIn {
                 from { opacity: 0; }
@@ -75,10 +75,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
       
       <main className="container mx-auto px-6 py-24">
         <section className="text-center mb-20">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-navy dark:text-white mb-4 transition-colors duration-300">
             Tentang <span className="text-gold" style={{ filter: 'url(#scribble-filter)' }}>Arstate Cinema</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto transition-colors duration-300">
             Kami bukan sekadar vendor, kami adalah partner Anda dalam merangkai dan mengabadikan cerita.
           </p>
         </section>
@@ -87,10 +87,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
             <div className="grid md:grid-cols-2 gap-12 items-start">
                 <div className="order-1">
                     <h2 className="text-3xl font-bold text-gold mb-4">Cerita Kami</h2>
-                    <p className="text-gray-400 leading-relaxed mb-4">
+                    <p className="text-gray-500 dark:text-gray-400 leading-relaxed mb-4 transition-colors duration-300">
                         Arstate Cinema lahir dari kecintaan pada seni visual dan kekuatan sebuah cerita. Didirikan pada tahun 2020, kami memulai perjalanan dengan sebuah kamera dan mimpi besar: mengubah momen-momen berharga menjadi mahakarya sinematik yang dapat dikenang selamanya.
                     </p>
-                    <p className="text-gray-400 leading-relaxed">
+                    <p className="text-gray-500 dark:text-gray-400 leading-relaxed transition-colors duration-300">
                         Kini, kami telah berkembang menjadi sebuah tim kreatif yang solid, terdiri dari para videografer, fotografer, dan desainer web berbakat. Namun, semangat kami tetap sama—mendedikasikan keahlian kami untuk menangkap esensi dari setiap momen dan menghadirkannya dalam format visual yang memukau.
                     </p>
                 </div>
@@ -109,14 +109,14 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
                                         transition-all duration-700 ease-in-out
                                         ${
                                             index === activeIndex 
-                                            ? 'bg-navy-card border-gold shadow-[0_0_15px_5px_rgba(255,193,7,0.3)]' 
-                                            : 'bg-navy-card/50 hover:bg-navy-card/80 border-blue-500/50'
+                                            ? 'bg-gray-50 dark:bg-navy-card border-gold shadow-[0_0_15px_5px_rgba(255,193,7,0.3)]' 
+                                            : 'bg-gray-100/50 dark:bg-navy-card/50 hover:bg-gray-100/80 dark:hover:bg-navy-card/80 border-gray-300/50 dark:border-blue-500/50'
                                         }
                                     `}
                                 >
                                     <div className="w-[330px] h-full flex flex-col justify-center">
-                                        <h3 className="text-2xl font-bold text-white mb-3 whitespace-nowrap">{p.title}</h3>
-                                        <p className="text-gray-400 leading-relaxed text-base">{p.description}</p>
+                                        <h3 className="text-2xl font-bold text-navy dark:text-white mb-3 whitespace-nowrap transition-colors duration-300">{p.title}</h3>
+                                        <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-base transition-colors duration-300">{p.description}</p>
                                     </div>
                                 </div>
                             ))}
@@ -134,16 +134,16 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
                         <div className="relative w-40 h-40 mb-4">
                             <img src={member.img} alt={member.name} className="rounded-full w-full h-full object-cover border-4 border-gold/50" />
                         </div>
-                        <h3 className="text-xl font-bold text-white">{member.name}</h3>
+                        <h3 className="text-xl font-bold text-navy dark:text-white transition-colors duration-300">{member.name}</h3>
                         <p className="text-gold font-semibold mb-2">{member.role}</p>
-                        <p className="text-gray-400 max-w-xs">{member.bio}</p>
+                        <p className="text-gray-500 dark:text-gray-400 max-w-xs transition-colors duration-300">{member.bio}</p>
                     </div>
                 ))}
             </div>
         </section>
       </main>
       
-      <footer className="border-t border-white/10 py-8">
+      <footer className="border-t border-gray-200 dark:border-white/10 py-8 transition-colors duration-300">
             <div className="container mx-auto px-6 text-center text-gray-500">
                 <p>&copy; {new Date().getFullYear()} Arstate Cinema. All Rights Reserved.</p>
             </div>

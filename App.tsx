@@ -18,21 +18,56 @@ const App: React.FC = () => {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-      document.body.classList.remove('light-mode');
     } else {
       document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark');
-      document.body.classList.add('light-mode');
     }
   }, [isDarkMode]);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
+  const toggleDarkMode = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const header = document.querySelector('.theme-transition-header');
+    
+    // @ts-ignore - document.startViewTransition is a new API
+    if (!document.startViewTransition || !header) {
+      setIsDarkMode(prevMode => !prevMode);
+      return;
+    }
+
+    const rect = header.getBoundingClientRect();
+    const x = event.clientX;
+    const y = event.clientY;
+
+    const corners = [
+      { x: rect.left, y: rect.top },
+      { x: rect.right, y: rect.top },
+      { x: rect.left, y: rect.bottom },
+      { x: rect.right, y: rect.bottom },
+    ];
+    const endRadius = Math.max(...corners.map(corner => Math.hypot(corner.x - x, corner.y - y)));
+
+    // @ts-ignore
+    const transition = document.startViewTransition(() => {
+      setIsDarkMode(prevMode => !prevMode);
+    });
+
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x - rect.left}px ${y - rect.top}px)`,
+            `circle(${endRadius}px at ${x - rect.left}px ${y - rect.top}px)`,
+          ],
+        },
+        {
+          duration: 700,
+          easing: 'ease-in-out',
+          pseudoElement: '::view-transition-new(main-header)',
+        }
+      );
+    });
   };
 
   return (
-    <div className="min-h-screen text-gray-300 font-sans bg-navy">
+    <div className="min-h-screen text-gray-700 dark:text-gray-300 font-sans bg-white dark:bg-navy transition-colors duration-300">
       {page === 'home' ? (
         <>
           <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
