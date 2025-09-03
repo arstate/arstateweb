@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from '@google/genai';
-import { CloseIcon, SendIcon, SparklesIcon } from './icons';
+import { CloseIcon, SendIcon } from './icons';
 
 // Declare global variables from CDN scripts
 declare const process: any;
@@ -89,7 +89,7 @@ const AskAI: React.FC = () => {
                 fixed bottom-8 right-8 z-50
                 transition-all duration-500 ease-in-out origin-bottom-right
                 ${isOpen 
-                    ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-white/5 backdrop-blur-lg shadow-2xl shadow-gold/25 border border-gold/20' 
+                    ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-white/5 backdrop-blur-lg shadow-2xl shadow-gold/25 border-2 border-gold' 
                     : 'w-16 h-16 rounded-[2rem] bg-white shadow-lg cursor-pointer transform hover:scale-110 hover:bg-gold hover:shadow-xl hover:shadow-gold/30'
                 }
             `}
@@ -112,9 +112,9 @@ const AskAI: React.FC = () => {
             `}>
                  {/* Header */}
                 <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-white/10">
-                    <div className="flex items-center space-x-2">
-                        <SparklesIcon className="w-6 h-6 text-gold" />
-                        <h3 className="font-bold text-white">Tanya Arstate AI</h3>
+                    <div className="flex items-center space-x-4">
+                        <img src={iconUrl} alt="Arstate AI Icon" className="w-12 h-12 object-contain" />
+                        <h3 className="font-bold text-white text-2xl">Tanya Arstate AI</h3>
                     </div>
                     <button onClick={toggleChat} className="p-1 text-gray-400 hover:text-gold transition-colors rounded-full">
                         <CloseIcon />

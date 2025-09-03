@@ -9,9 +9,11 @@ import Qualities from './components/Qualities';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AskAI from './components/AskAI';
+import AboutPage from './components/AboutPage';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [page, setPage] = useState<'home' | 'about'>('home');
 
   useEffect(() => {
     if (isDarkMode) {
@@ -31,16 +33,22 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen text-gray-300 font-sans bg-navy">
-      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      <main>
-        <Hero />
-        <TrustedBy />
-        <Services />
-        <FeaturedWork />
-        <Qualities isDarkMode={isDarkMode} />
-        <Contact />
-      </main>
-      <Footer />
+      {page === 'home' ? (
+        <>
+          <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+          <main>
+            <Hero />
+            <TrustedBy />
+            <Services />
+            <FeaturedWork />
+            <Qualities isDarkMode={isDarkMode} />
+            <Contact onNavigateToAbout={() => setPage('about')} />
+          </main>
+          <Footer />
+        </>
+      ) : (
+        <AboutPage onBack={() => setPage('home')} isDarkMode={isDarkMode} />
+      )}
       <AskAI />
     </div>
   );

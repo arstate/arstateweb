@@ -1,0 +1,155 @@
+
+import React, { useState } from 'react';
+import { ChevronLeftIcon } from './icons';
+
+interface AboutPageProps {
+  onBack: () => void;
+  isDarkMode: boolean;
+}
+
+const teamMembers = [
+  {
+    name: 'Andi Pratama',
+    role: 'Founder & Lead Videographer',
+    bio: 'Dengan passion mendalam pada sinematografi, Andi memimpin setiap proyek dengan visi artistik yang kuat untuk menangkap emosi dalam setiap frame.',
+    img: 'https://picsum.photos/seed/andi_team/400/400'
+  },
+  {
+    name: 'Rina Wijayanti',
+    role: 'Creative Director & Photographer',
+    bio: 'Keahlian Rina dalam komposisi dan cahaya mengubah momen biasa menjadi karya fotografi yang abadi dan penuh cerita.',
+    img: 'https://picsum.photos/seed/rina_team/400/400'
+  },
+    {
+    name: 'Budi Santoso',
+    role: 'Web Designer & Developer',
+    bio: 'Budi adalah arsitek digital kami, menciptakan pengalaman web yang imersif dan fungsional yang melengkapi cerita visual klien kami.',
+    img: 'https://picsum.photos/seed/budi_team/400/400'
+  }
+];
+
+const philosophies = [
+    {
+        title: 'Kolaborasi Kreatif',
+        description: 'Kami percaya bahwa hasil terbaik lahir dari kolaborasi. Kami mendengarkan visi Anda dan bekerja bersama untuk mewujudkannya.'
+    },
+    {
+        title: 'Kualitas Sinematik',
+        description: 'Setiap proyek kami garap dengan standar kualitas tertinggi, menggunakan peralatan modern dan teknik penceritaan visual yang kuat.'
+    },
+    {
+        title: 'Sentuhan Personal',
+        description: 'Kami memahami bahwa setiap klien dan setiap momen adalah unik. Kami memberikan sentuhan personal untuk memastikan cerita Anda tersampaikan.'
+    }
+];
+
+
+const AboutPage: React.FC<AboutPageProps> = ({ onBack, isDarkMode }) => {
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+  return (
+    <div className="min-h-screen text-gray-300 font-sans bg-navy animate-fadeIn">
+        <style>{`
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .animate-fadeIn {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+        `}</style>
+      <header className="relative py-6 px-6">
+        <button
+          onClick={onBack}
+          className="absolute top-1/2 -translate-y-1/2 left-6 z-10 flex items-center space-x-2 text-gold hover:text-amber-500 transition-colors duration-300 font-semibold"
+          aria-label="Kembali ke beranda"
+        >
+          <ChevronLeftIcon />
+          <span>Kembali</span>
+        </button>
+      </header>
+      
+      <main className="container mx-auto px-6 py-24">
+        <section className="text-center mb-20">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+            Tentang <span className="text-gold" style={{ filter: 'url(#scribble-filter)' }}>Arstate Cinema</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+            Kami bukan sekadar vendor, kami adalah partner Anda dalam merangkai dan mengabadikan cerita.
+          </p>
+        </section>
+
+        <section className="mt-20 mb-20">
+            <div className="grid md:grid-cols-2 gap-12 items-start">
+                <div className="order-1">
+                    <h2 className="text-3xl font-bold text-gold mb-4">Cerita Kami</h2>
+                    <p className="text-gray-400 leading-relaxed mb-4">
+                        Arstate Cinema lahir dari kecintaan pada seni visual dan kekuatan sebuah cerita. Didirikan pada tahun 2020, kami memulai perjalanan dengan sebuah kamera dan mimpi besar: mengubah momen-momen berharga menjadi mahakarya sinematik yang dapat dikenang selamanya.
+                    </p>
+                    <p className="text-gray-400 leading-relaxed">
+                        Kini, kami telah berkembang menjadi sebuah tim kreatif yang solid, terdiri dari para videografer, fotografer, dan desainer web berbakat. Namun, semangat kami tetap sama—mendedikasikan keahlian kami untuk menangkap esensi dari setiap momen dan menghadirkannya dalam format visual yang memukau.
+                    </p>
+                </div>
+                 <div className="order-2 flex justify-center md:justify-end">
+                    <div>
+                        <h2 className="text-3xl font-bold text-gold mb-4 text-center md:text-left">Filosofi Kami</h2>
+                        <div className="flex justify-center md:justify-start h-[250px] md:h-[220px] gap-2">
+                            {philosophies.map((p, index) => (
+                                <div
+                                    key={p.title}
+                                    onClick={() => setActiveIndex(index)}
+                                    style={{ width: index === activeIndex ? '380px' : '80px' }}
+                                    className={`
+                                        relative rounded-2xl p-4 overflow-hidden cursor-pointer
+                                        border 
+                                        transition-all duration-700 ease-in-out
+                                        ${
+                                            index === activeIndex 
+                                            ? 'bg-navy-card border-gold shadow-[0_0_15px_5px_rgba(255,193,7,0.3)]' 
+                                            : 'bg-navy-card/50 hover:bg-navy-card/80 border-blue-500/50'
+                                        }
+                                    `}
+                                >
+                                    <div className="w-[330px] h-full flex flex-col justify-center">
+                                        <h3 className="text-2xl font-bold text-white mb-3 whitespace-nowrap">{p.title}</h3>
+                                        <p className="text-gray-400 leading-relaxed text-base">{p.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section className="mb-12">
+            <h2 className="text-3xl font-bold text-gold mb-12 text-center">Tim Kreatif Kami</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                {teamMembers.map(member => (
+                    <div key={member.name} className="text-center flex flex-col items-center">
+                        <div className="relative w-40 h-40 mb-4">
+                            <img src={member.img} alt={member.name} className="rounded-full w-full h-full object-cover border-4 border-gold/50" />
+                        </div>
+                        <h3 className="text-xl font-bold text-white">{member.name}</h3>
+                        <p className="text-gold font-semibold mb-2">{member.role}</p>
+                        <p className="text-gray-400 max-w-xs">{member.bio}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+      </main>
+      
+      <footer className="border-t border-white/10 py-8">
+            <div className="container mx-auto px-6 text-center text-gray-500">
+                <p>&copy; {new Date().getFullYear()} Arstate Cinema. All Rights Reserved.</p>
+            </div>
+      </footer>
+    </div>
+  );
+};
+
+export default AboutPage;

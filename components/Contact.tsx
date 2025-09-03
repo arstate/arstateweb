@@ -1,7 +1,11 @@
 
 import React from 'react';
 
-const Contact: React.FC = () => {
+interface ContactProps {
+  onNavigateToAbout: () => void;
+}
+
+const Contact: React.FC<ContactProps> = ({ onNavigateToAbout }) => {
 
   const whatsappMessage = `Halo kakk
 Saya menemukan jasa dari Arstate Cinema melalui instagram & website dan tertarik untuk menggunakan jasa fotografi/videografi.
@@ -9,18 +13,6 @@ Mohon informasinya mengenai paket dan pricelist yang sesuai.
 Terima kasih.`;
 
   const whatsappUrl = `https://wa.me/6289617323344?text=${encodeURIComponent(whatsappMessage)}`;
-
-  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const href = e.currentTarget.getAttribute('href');
-    if (href && href.startsWith('#')) {
-      const targetId = href.substring(1);
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
 
   return (
     <section id="contact" className="py-24 bg-navy">
@@ -33,8 +25,11 @@ Terima kasih.`;
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href="#layanan"
-            onClick={handleSmoothScroll}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigateToAbout();
+            }}
             className="w-full sm:w-auto text-center px-8 py-3 text-gold border border-gold rounded-full hover:bg-gold hover:text-navy font-semibold transition-colors duration-300"
           >
             Info Selengkapnya
