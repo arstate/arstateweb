@@ -13,6 +13,7 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
     const engineRef = useRef<any>(null);
     const renderRef = useRef<any>(null);
     const runnerRef = useRef<any>(null);
+    const lastWidthRef = useRef<number>(0);
 
     useEffect(() => {
         const { Engine, Render, Runner, Bodies, Composite, Events, Mouse, MouseConstraint, Constraint } = Matter;
@@ -37,6 +38,7 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
 
             const width = container.clientWidth;
             const height = container.clientHeight;
+            lastWidthRef.current = width;
             const isMobile = width <= 768;
 
             const engine = Engine.create();
@@ -60,7 +62,6 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
             const bubbleColor = '#FFC107';
             const ropeColor = '#FFC107';
             
-            // Determine text color based on the theme prop
             const bodyTextColor = document.body.classList.contains('light-mode') ? darkThemeTextColor : lightThemeTextColor;
 
             const wallThickness = 100;
@@ -92,7 +93,6 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                  });
             };
 
-            // Create Keyword Bubbles
             const keywordData = [ 'Profesional', 'Kreatif', 'Cepat', 'Terpercaya', 'Memukau', 'Sinematik', 'Berpengalaman', 'Inovatif', 'Responsif', 'Bercerita' ];
             const keywordBubbles = keywordData.map(text => createBody(
                 Math.random() * (width * 0.8) + (width * 0.1),
@@ -100,7 +100,6 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                 text
             ));
             
-            // Create Title Bodies (invisible)
             const titleOptions = { isTitle: true, paddingX: 10, paddingY: 10, customFillStyle: lightThemeTextColor };
             const title1 = createBody(0, 0, 'Kualitas Kami', { ...titleOptions, font: `bold ${isMobile ? 24 : 40}px Poppins` });
             const title2 = createBody(0, 0, 'Dalam', { ...titleOptions, font: `bold ${isMobile ? 24 : 40}px Poppins` });
@@ -108,7 +107,6 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
             
             const allBodies = [...walls, ...keywordBubbles, title1, title2, title3];
             
-            // Create Constraints (Ropes)
             const constraints: any[] = [];
             const ropeOptions = {
                 stiffness: isMobile ? 0.3 : 0.1,
@@ -117,9 +115,9 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                     type: 'line',
                     strokeStyle: ropeColor,
                     lineWidth: 2,
-                    visible: false // We will do custom rendering
+                    visible: false
                 },
-                customIsRope: true // Custom flag for rendering
+                customIsRope: true
             };
 
             if(isMobile) {
@@ -143,9 +141,8 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
             
             const mouse = Mouse.create(render.canvas);
             
-            // Allow page scrolling when mouse is over the canvas
             mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
-            mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel); // For Firefox
+            mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
 
             const mouseConstraint = MouseConstraint.create(engine, {
                 mouse: mouse,
@@ -181,7 +178,6 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                 const bodies = Composite.allBodies(engine.world);
                 const allConstraints = Composite.allConstraints(engine.world);
 
-                // Render Ropes
                 context.strokeStyle = ropeColor;
                 context.lineWidth = 1.5;
                 for(const constraint of allConstraints) {
@@ -196,7 +192,6 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                     }
                 }
                 
-                // Render Text
                 context.textAlign = 'center';
                 context.textBaseline = 'middle';
                 for (const body of bodies) {
@@ -221,11 +216,23 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
 
         initialize();
 
-        const handleResize = () => initialize();
-        window.addEventListener('resize', handleResize);
+        let resizeTimeout: number;
+        const handleResize = () => {
+             const container = sceneRef.current;
+             if (container && container.clientWidth !== lastWidthRef.current) {
+                 initialize();
+             }
+        };
+
+        const debouncedResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = window.setTimeout(handleResize, 150);
+        };
+
+        window.addEventListener('resize', debouncedResize);
 
         return () => {
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', debouncedResize);
             cleanup();
         };
 
@@ -234,7 +241,6 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
     return (
          <section className="py-20 bg-navy dark:bg-navy overflow-hidden">
             <div className="container mx-auto px-6 h-[80vh] relative">
-                {/* Matter.js canvas container */}
                 <div className="w-full h-full" ref={sceneRef} />
             </div>
         </section>
