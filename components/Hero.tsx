@@ -1,6 +1,19 @@
+
 import React from 'react';
 
 const Hero: React.FC = () => {
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const targetId = href.substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <section 
       className="relative h-screen flex flex-col items-center justify-end text-center text-white overflow-hidden pb-32"
@@ -26,6 +39,7 @@ const Hero: React.FC = () => {
           </p>
           <a
             href="#karya-pilihan"
+            onClick={handleSmoothScroll}
             className="inline-block bg-gold text-navy font-bold px-8 py-3 rounded-full uppercase tracking-wider hover:bg-amber-500 transform hover:scale-105 transition-all duration-300"
           >
             Lihat Karya Kami

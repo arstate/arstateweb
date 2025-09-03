@@ -3,6 +3,23 @@ import React from 'react';
 import { InstagramIcon, FacebookIcon, TwitterIcon } from './icons';
 
 const Footer: React.FC = () => {
+    
+    const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const href = e.currentTarget.getAttribute('href');
+        if (href) {
+            if (href === '#') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+    };
+
     return (
         <footer className="bg-navy/50 border-t border-white/10 pt-16 pb-8">
             <div className="container mx-auto px-6">
@@ -26,10 +43,10 @@ const Footer: React.FC = () => {
                     <div>
                         <h4 className="text-lg font-semibold text-white tracking-wider">Navigasi</h4>
                         <ul className="mt-4 space-y-2">
-                            <li><a href="#" className="text-gray-400 hover:text-gold transition-colors">Beranda</a></li>
-                            <li><a href="#layanan" className="text-gray-400 hover:text-gold transition-colors">Layanan</a></li>
-                            <li><a href="#karya-pilihan" className="text-gray-400 hover:text-gold transition-colors">Portofolio</a></li>
-                            <li><a href="#contact" className="text-gray-400 hover:text-gold transition-colors">Hubungi Kami</a></li>
+                            <li><a href="#" onClick={handleSmoothScroll} className="text-gray-400 hover:text-gold transition-colors">Beranda</a></li>
+                            <li><a href="#layanan" onClick={handleSmoothScroll} className="text-gray-400 hover:text-gold transition-colors">Layanan</a></li>
+                            <li><a href="#karya-pilihan" onClick={handleSmoothScroll} className="text-gray-400 hover:text-gold transition-colors">Portofolio</a></li>
+                            <li><a href="#contact" onClick={handleSmoothScroll} className="text-gray-400 hover:text-gold transition-colors">Hubungi Kami</a></li>
                         </ul>
                     </div>
 

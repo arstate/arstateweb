@@ -10,6 +10,18 @@ Terima kasih.`;
 
   const whatsappUrl = `https://wa.me/6289617323344?text=${encodeURIComponent(whatsappMessage)}`;
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const targetId = href.substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <section id="contact" className="py-24 bg-navy">
       <div className="container mx-auto px-6 text-center">
@@ -22,6 +34,7 @@ Terima kasih.`;
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
             href="#layanan"
+            onClick={handleSmoothScroll}
             className="w-full sm:w-auto text-center px-8 py-3 text-gold border border-gold rounded-full hover:bg-gold hover:text-navy font-semibold transition-colors duration-300"
           >
             Info Selengkapnya

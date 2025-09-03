@@ -20,11 +20,28 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
     setIsMobileMenuOpen(false);
   };
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute('href');
+    if (href) {
+      if (href === '#') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const targetId = href.substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+    handleLinkClick();
+  };
+
   return (
     <header className="sticky top-0 left-0 right-0 z-50 bg-navy/80 backdrop-blur-md">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" className="text-2xl font-bold text-white whitespace-nowrap">
+          <a href="#" onClick={handleSmoothScroll} className="text-2xl font-bold text-white whitespace-nowrap">
             Arstate <span className="text-gold" style={{ filter: 'url(#scribble-filter)' }}>Cinema</span>
           </a>
           
@@ -35,6 +52,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                 <a
                   key={link.name}
                   href={link.href}
+                  onClick={handleSmoothScroll}
                   className="text-white hover:text-gold transition-colors duration-300"
                 >
                   {link.name}
@@ -44,6 +62,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
             <div className="flex items-center space-x-4">
               <a
                 href="#contact"
+                onClick={handleSmoothScroll}
                 className="px-5 py-2 text-white border border-gold rounded-full hover:bg-gold hover:text-navy transition-colors duration-300"
               >
                 Hubungi Kami
@@ -89,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={handleLinkClick}
+                  onClick={handleSmoothScroll}
                   className="text-white hover:text-gold transition-colors duration-300 py-2 text-center"
                 >
                   {link.name}
@@ -97,7 +116,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode }) => {
               ))}
                <a
                 href="#contact"
-                onClick={handleLinkClick}
+                onClick={handleSmoothScroll}
                 className="w-full text-center mt-2 px-5 py-2 text-white border border-gold rounded-full hover:bg-gold hover:text-navy transition-colors duration-300"
               >
                 Hubungi Kami

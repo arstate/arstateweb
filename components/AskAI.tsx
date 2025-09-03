@@ -89,8 +89,8 @@ const AskAI: React.FC = () => {
                 fixed bottom-8 right-8 z-50
                 transition-all duration-500 ease-in-out origin-bottom-right
                 ${isOpen 
-                    ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-navy-card shadow-2xl border border-white/10' 
-                    : 'w-16 h-16 rounded-[2rem] bg-gold shadow-lg cursor-pointer transform hover:scale-110'
+                    ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-white/5 backdrop-blur-lg shadow-2xl shadow-gold/25 border border-gold/20' 
+                    : 'w-16 h-16 rounded-[2rem] bg-white shadow-lg cursor-pointer transform hover:scale-110 hover:bg-gold hover:shadow-xl hover:shadow-gold/30'
                 }
             `}
             onClick={!isOpen ? toggleChat : undefined}
@@ -116,7 +116,7 @@ const AskAI: React.FC = () => {
                         <SparklesIcon className="w-6 h-6 text-gold" />
                         <h3 className="font-bold text-white">Tanya Arstate AI</h3>
                     </div>
-                    <button onClick={toggleChat} className="p-1 text-gray-400 hover:text-white transition-colors rounded-full">
+                    <button onClick={toggleChat} className="p-1 text-gray-400 hover:text-gold transition-colors rounded-full">
                         <CloseIcon />
                     </button>
                 </div>
@@ -159,7 +159,11 @@ const AskAI: React.FC = () => {
                             className="w-full bg-white/10 border border-white/20 rounded-full py-2 px-4 text-white text-sm focus:outline-none focus:ring-2 focus:ring-gold transition-shadow"
                             disabled={isLoading}
                         />
-                        <button type="submit" className="p-3 bg-gold text-navy rounded-full hover:bg-amber-500 disabled:bg-gold/50 transition-colors" disabled={isLoading || !inputValue.trim()}>
+                        <button 
+                            type="submit" 
+                            className="p-3 rounded-full transition-colors bg-gold text-navy hover:bg-amber-500 disabled:bg-gray-300 disabled:text-gray-500" 
+                            disabled={isLoading || !inputValue.trim()}
+                        >
                             <SendIcon />
                         </button>
                     </form>
