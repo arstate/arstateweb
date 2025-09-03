@@ -55,6 +55,12 @@
 
     /* --- View Transition API styles for theme change --- */
     
+    /* Block user interaction during the transition */
+    ::view-transition {
+      pointer-events: auto;
+      cursor: wait;
+    }
+
     @keyframes fade-out-animation {
       to { opacity: 0; }
     }
