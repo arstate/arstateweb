@@ -49,7 +49,7 @@ const TrustedBy: React.FC = () => {
           {[...clientLogos, ...clientLogos].map((logo, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-36 h-36 mx-4 my-10 flex items-center justify-center bg-gray-200 dark:bg-gray-600 p-4 rounded-2xl border-2 border-gray-300 dark:border-sky-300 transition-all duration-300 ease-in-out hover:border-gold hover:shadow-xl hover:shadow-gold/30 hover:-translate-y-2"
+              className="flex-shrink-0 w-36 h-36 mx-4 my-10 flex items-center justify-center bg-gray-200 dark:bg-white-100 p-4 rounded-2xl border-2 border-gray-300 dark:border-sky-300 transition-all duration-300 ease-in-out hover:border-gold hover:shadow-xl hover:shadow-gold/30 hover:-translate-y-2"
               title={`Client ${index + 1}`}
             >
               <img src={logo} alt={`Client logo ${index + 1}`} className="h-24 w-full object-contain pointer-events-none" />
