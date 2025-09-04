@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { MoonIcon, SunIcon, MenuIcon } from './icons';
 
@@ -50,8 +49,8 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPa
     }
   };
   
-  const handleLinkHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!isDarkMode || !navRef.current) return;
+  const handleLinkHover = (e: React.MouseEvent<HTMLElement>) => {
+    if (!navRef.current) return;
     const linkEl = e.currentTarget;
     setMagicLineStyle({
       opacity: 1,
@@ -62,7 +61,6 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPa
   };
 
   const handleNavLeave = () => {
-    if (!isDarkMode) return;
     setMagicLineStyle(prev => ({ ...prev, opacity: 0 }));
   };
 
@@ -76,28 +74,26 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPa
           </a>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <div className="hidden md:flex items-center">
             <nav 
               ref={navRef}
               onMouseLeave={handleNavLeave}
               className="relative flex items-center space-x-6 lg:space-x-8"
             >
-              {isDarkMode && (
-                <span
-                  className="absolute bg-gold rounded-full pointer-events-none"
-                  style={{
-                    ...magicLineStyle,
-                    transition: 'all 300ms ease-in-out',
-                  }}
-                />
-              )}
+              <span
+                className={`absolute rounded-full pointer-events-none ${isDarkMode ? 'bg-gold' : 'bg-navy'}`}
+                style={{
+                  ...magicLineStyle,
+                  transition: 'all 300ms ease-in-out',
+                }}
+              />
               {navLinks.map(link => (
                 <a
                   key={link.name}
                   href={link.href}
                   onMouseEnter={handleLinkHover}
                   onClick={(e) => handleNavigation(e, link.href)}
-                  className="relative z-10 text-navy dark:text-white dark:hover:text-navy transition-colors duration-150 py-1 px-3"
+                  className="relative z-10 text-navy dark:text-white hover:bg-transparent hover:text-white dark:hover:bg-transparent dark:hover:text-navy rounded-full transition-colors duration-300 py-1 px-3"
                 >
                   {link.name}
                 </a>
@@ -106,27 +102,26 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleDarkMode, page, setPa
                 href="#contact"
                 onMouseEnter={handleLinkHover}
                 onClick={(e) => handleNavigation(e, '#contact')}
-                className="relative z-10 px-5 py-2 text-navy dark:text-white border border-navy dark:border-gold rounded-full hover:bg-navy hover:text-white dark:hover:bg-transparent dark:hover:text-navy transition-colors duration-300"
+                className="relative z-10 px-5 py-2 text-navy dark:text-white border border-navy dark:border-gold rounded-full hover:bg-transparent hover:text-white dark:hover:bg-transparent dark:hover:text-navy dark:hover:border-transparent transition-colors duration-300"
               >
                 Hubungi Kami
               </a>
-            </nav>
-            <div className="flex items-center">
               <button
+                onMouseEnter={handleLinkHover}
                 onClick={toggleDarkMode}
-                className="p-2 rounded-full text-navy dark:text-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50"
+                className="relative z-10 p-2 flex items-center justify-center rounded-full text-navy dark:text-gold hover:text-white dark:hover:text-navy focus:outline-none transition-colors duration-300"
                 aria-label="Toggle dark mode"
               >
                 {isDarkMode ? <SunIcon /> : <MoonIcon />}
               </button>
-            </div>
+            </nav>
           </div>
 
           {/* Mobile Menu Button & Theme Toggle */}
           <div className="flex items-center md:hidden space-x-2">
              <button
                 onClick={toggleDarkMode}
-                className="p-2 rounded-full text-navy dark:text-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50"
+                className="p-2 rounded-full text-navy dark:text-gold focus:outline-none"
                 aria-label="Toggle dark mode"
               >
                 {isDarkMode ? <SunIcon /> : <MoonIcon />}
