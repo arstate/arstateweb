@@ -4,16 +4,19 @@ import { InstagramIcon, FacebookIcon, TwitterIcon } from './icons';
 
 interface FooterProps {
     smoothScrollTo: (id: string) => void;
+    setPage: (page: 'home' | 'about' | 'gallery') => void;
+    setScrollToSection: (sectionId: string | null) => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ smoothScrollTo }) => {
+const Footer: React.FC<FooterProps> = ({ smoothScrollTo, setPage, setScrollToSection }) => {
     
     const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         const href = e.currentTarget.getAttribute('href');
         if (href && href.startsWith('#')) {
             const targetId = href.substring(1);
-            smoothScrollTo(targetId);
+            setPage('home');
+            setScrollToSection(targetId);
         }
     };
 

@@ -10,10 +10,12 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AskAI from './components/AskAI';
 import AboutPage from './components/AboutPage';
+import GalleryPage from './components/GalleryPage';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [page, setPage] = useState<'home' | 'about'>('home');
+  const [page, setPage] = useState<'home' | 'about' | 'gallery'>('home');
+  const [selectedGalleryCategory, setSelectedGalleryCategory] = useState<string | null>(null);
   const [scrollToSection, setScrollToSection] = useState<string | null>(null);
 
   useEffect(() => {
@@ -118,6 +120,37 @@ const App: React.FC = () => {
     });
   };
 
+  const handleNavigateToGallery = (category: string) => {
+    setSelectedGalleryCategory(category);
+    setPage('gallery');
+  }
+  
+  const renderPage = () => {
+    switch(page) {
+      case 'home':
+        return (
+          <>
+            <Hero smoothScrollTo={smoothScrollTo}/>
+            <TrustedBy />
+            <Services onNavigateToGallery={handleNavigateToGallery} />
+            <FeaturedWork />
+            <Qualities isDarkMode={isDarkMode} />
+            <Contact onNavigateToAbout={() => setPage('about')} />
+          </>
+        );
+      case 'about':
+        return <AboutPage isDarkMode={isDarkMode} />;
+      case 'gallery':
+        return <GalleryPage 
+                  categoryKey={selectedGalleryCategory!} 
+                  onNavigateBack={() => setPage('home')}
+                  isDarkMode={isDarkMode}
+               />
+      default:
+        return null;
+    }
+  }
+
   return (
     <div className="min-h-screen text-gray-700 dark:text-gray-300 font-sans bg-white dark:bg-navy transition-colors duration-1000">
       <Header 
@@ -129,20 +162,9 @@ const App: React.FC = () => {
         smoothScrollTo={smoothScrollTo}
       />
       <main>
-        {page === 'home' ? (
-          <>
-            <Hero smoothScrollTo={smoothScrollTo}/>
-            <TrustedBy />
-            <Services />
-            <FeaturedWork />
-            <Qualities isDarkMode={isDarkMode} />
-            <Contact onNavigateToAbout={() => setPage('about')} />
-          </>
-        ) : (
-          <AboutPage isDarkMode={isDarkMode} />
-        )}
+        {renderPage()}
       </main>
-      <Footer smoothScrollTo={smoothScrollTo} />
+      <Footer smoothScrollTo={smoothScrollTo} setPage={setPage} setScrollToSection={setScrollToSection}/>
       <AskAI />
     </div>
   );

@@ -131,14 +131,58 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                 constraints.push(Constraint.create({ bodyA: title1, bodyB: title2, ...ropeOptions }));
                 constraints.push(Constraint.create({ bodyA: title2, bodyB: title3, ...ropeOptions }));
             } else {
-                Matter.Body.setPosition(title1, { x: width * 0.3, y: height * 0.15 });
-                Matter.Body.setPosition(title2, { x: width * 0.5, y: height * 0.3 });
-                Matter.Body.setPosition(title3, { x: width * 0.7, y: height * 0.15 });
+                const title1InitialX = width * 0.25;
+                const title2InitialX = width * 0.5;
+                const title3InitialX = width * 0.75;
+
+                Matter.Body.setPosition(title1, { x: title1InitialX, y: height * 0.15 });
+                Matter.Body.setPosition(title2, { x: title2InitialX, y: height * 0.35 });
+                Matter.Body.setPosition(title3, { x: title3InitialX, y: height * 0.15 });
                 
-                constraints.push(Constraint.create({ bodyA: title1, pointB: { x: width * 0.25, y: height * 0.05 }, ...ropeOptions }));
-                constraints.push(Constraint.create({ bodyA: title3, pointB: { x: width * 0.75, y: height * 0.05 }, ...ropeOptions }));
-                constraints.push(Constraint.create({ bodyA: title1, bodyB: title2, ...ropeOptions }));
-                constraints.push(Constraint.create({ bodyA: title2, bodyB: title3, ...ropeOptions }));
+                // For a rectangle body, get half-width and half-height for precise anchor points
+                const getBodyHalfSize = (body: any) => {
+                    const bodyWidth = body.bounds.max.x - body.bounds.min.x;
+                    const bodyHeight = body.bounds.max.y - body.bounds.min.y;
+                    return { halfWidth: bodyWidth / 2, halfHeight: bodyHeight / 2 };
+                };
+                
+                const { halfWidth: title1HalfWidth, halfHeight: title1HalfHeight } = getBodyHalfSize(title1);
+                const { halfWidth: title2HalfWidth, halfHeight: title2HalfHeight } = getBodyHalfSize(title2);
+                const { halfWidth: title3HalfWidth, halfHeight: title3HalfHeight } = getBodyHalfSize(title3);
+
+                // "Kualitas Kami" (title1) is hung from its top-left corner.
+                constraints.push(Constraint.create({
+                    pointA: { x: title1InitialX - title1HalfWidth, y: 0 },
+                    bodyB: title1,
+                    pointB: { x: -title1HalfWidth, y: -title1HalfHeight },
+                    ...ropeOptions
+                }));
+
+                // "Setiap Proyek" (title3) is hung from its top-right corner.
+                constraints.push(Constraint.create({
+                    pointA: { x: title3InitialX + title3HalfWidth, y: 0 },
+                    bodyB: title3,
+                    pointB: { x: title3HalfWidth, y: -title3HalfHeight },
+                    ...ropeOptions
+                }));
+
+                // Connect bottom-right of "Kualitas Kami" (title1) to top-left of "Dalam" (title2).
+                constraints.push(Constraint.create({
+                    bodyA: title1,
+                    pointA: { x: title1HalfWidth, y: title1HalfHeight }, // bottom-right of title1
+                    bodyB: title2,
+                    pointB: { x: -title2HalfWidth, y: -title2HalfHeight }, // top-left of title2
+                    ...ropeOptions
+                }));
+
+                // Connect bottom-right of "Dalam" (title2) to top-left of "Setiap Proyek" (title3).
+                constraints.push(Constraint.create({
+                    bodyA: title2,
+                    pointA: { x: title2HalfWidth, y: title2HalfHeight }, // bottom-right of title2
+                    bodyB: title3,
+                    pointB: { x: -title3HalfWidth, y: -title3HalfHeight }, // top-left of title3
+                    ...ropeOptions
+                }));
             }
             
             const mouse = Mouse.create(render.canvas);
@@ -154,25 +198,34 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
             Composite.add(engine.world, [...allBodies, ...constraints, mouseConstraint]);
 
             const drawWavyLine = (ctx: CanvasRenderingContext2D, fromX: number, fromY: number, toX: number, toY: number) => {
-                 const dx = toX - fromX;
-                 const dy = toY - fromY;
-                 const dist = Math.sqrt(dx * dx + dy * dy);
-                 const angle = Math.atan2(dy, dx);
-                 const segments = Math.round(dist / 10);
-                 const amplitude = 5;
-
-                 ctx.save();
-                 ctx.translate(fromX, fromY);
-                 ctx.rotate(angle);
-                 ctx.beginPath();
-                 ctx.moveTo(0, 0);
-                 for (let i = 0; i <= segments; i++) {
-                     const x = (i / segments) * dist;
-                     const y = Math.sin(i * 0.5) * amplitude;
-                     ctx.lineTo(x, y);
-                 }
-                 ctx.stroke();
-                 ctx.restore();
+                const dx = toX - fromX;
+                const dy = toY - fromY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 2) return; // Don't draw if it's too short
+                const angle = Math.atan2(dy, dx);
+                
+                const amplitude = 4;
+                const zigzagWavelength = 8; // Approximate length of each V-shape in the zigzag
+                const numSegments = Math.max(1, Math.floor(dist / zigzagWavelength));
+                const segmentLength = dist / numSegments;
+                let sign = 1;
+            
+                ctx.save();
+                ctx.translate(fromX, fromY);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+            
+                for (let i = 1; i <= numSegments; i++) {
+                    const currentX = i * segmentLength;
+                    // On the final segment, ensure it lands exactly at the end point (y=0 in this rotated context)
+                    const currentY = (i === numSegments) ? 0 : sign * amplitude;
+                    ctx.lineTo(currentX, currentY);
+                    sign *= -1; // Alternate direction for the next peak/trough
+                }
+            
+                ctx.stroke();
+                ctx.restore();
             }
 
             Events.on(render, 'afterRender', () => {
@@ -184,10 +237,13 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                 context.lineWidth = 1.5;
                 for(const constraint of allConstraints) {
                     if (constraint.customIsRope) {
-                       const bodyA = constraint.bodyA;
-                       const bodyB = constraint.bodyB;
-                       const startPos = bodyA ? bodyA.position : constraint.pointA;
-                       const endPos = bodyB ? bodyB.position : constraint.pointB;
+                       let bodyA = constraint.bodyA;
+                       let bodyB = constraint.bodyB;
+
+                       // For constraints with specific points, calculate the world position of those points
+                       const startPos = bodyA ? { x: bodyA.position.x + (constraint.pointA?.x || 0), y: bodyA.position.y + (constraint.pointA?.y || 0) } : constraint.pointA;
+                       const endPos = bodyB ? { x: bodyB.position.x + (constraint.pointB?.x || 0), y: bodyB.position.y + (constraint.pointB?.y || 0) } : constraint.pointB;
+                       
                        if (startPos && endPos) {
                            drawWavyLine(context, startPos.x, startPos.y, endPos.x, endPos.y);
                        }

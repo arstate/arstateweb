@@ -2,30 +2,38 @@
 import React from 'react';
 import { HeartIcon, DocumentIcon, CommercialIcon, GraduationCapIcon } from './icons';
 
+interface ServicesProps {
+  onNavigateToGallery: (categoryKey: string) => void;
+}
+
 const services = [
   {
+    key: 'wedding',
     icon: <HeartIcon />,
     title: 'Wedding & Prewedding',
     description: 'Paket lengkap untuk hari istimewa Anda, dari sesi pra-pernikahan yang romantis hingga liputan hari-H yang sinematik.',
   },
   {
+    key: 'event',
     icon: <DocumentIcon />,
     title: 'Dokumentasi Event',
     description: 'Liputan acara ulang tahun, seminar, gathering, atau konser dengan kualitas video dan foto yang profesional.',
   },
   {
+    key: 'commercial',
     icon: <CommercialIcon />,
     title: 'Konten Komersial',
     description: 'Produksi video profil perusahaan, iklan produk, atau konten media sosial untuk meningkatkan brand Anda.',
   },
   {
+    key: 'graduation',
     icon: <GraduationCapIcon />,
     title: 'Wisuda & Yearbook',
     description: 'Kami mengabadikan momen spesial kelulusan Anda dengan fotografi dan videografi berkualitas tinggi.',
   },
 ];
 
-const Services: React.FC = () => {
+const Services: React.FC<ServicesProps> = ({ onNavigateToGallery }) => {
   return (
     <section id="layanan" className="py-20 bg-gray-50 dark:bg-navy/50 transition-colors duration-1000">
       <div className="container mx-auto px-6 text-center">
@@ -36,9 +44,9 @@ const Services: React.FC = () => {
           Dari pernikahan yang sakral hingga acara perusahaan yang meriah, kami siap menangkap esensi dari setiap momen Anda.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, index) => (
+          {services.map((service) => (
             <div 
-              key={index}
+              key={service.key}
               className="bg-white dark:bg-navy-card rounded-2xl p-8 border border-gray-200 dark:border-blue-500 flex flex-col items-center text-center transition-all duration-300 hover:border-gold hover:-translate-y-2 hover:shadow-xl hover:shadow-gold/20"
             >
               <div className="mb-6 text-gold">
@@ -46,12 +54,12 @@ const Services: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-navy dark:text-white mb-3 transition-colors duration-1000">{service.title}</h3>
               <p className="text-gray-500 dark:text-gray-400 flex-grow mb-6 transition-colors duration-1000">{service.description}</p>
-              <a
-                href="#"
+              <button
+                onClick={() => onNavigateToGallery(service.key)}
                 className="mt-auto px-6 py-2 text-gold border border-gold rounded-full hover:bg-gold hover:text-navy transition-colors duration-300"
               >
                 Lihat Galeri
-              </a>
+              </button>
             </div>
           ))}
         </div>
