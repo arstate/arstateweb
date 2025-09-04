@@ -7,6 +7,7 @@ import ImageSlider from './ImageSlider';
 interface GalleryPageProps {
   categoryKey: string;
   onNavigateBack: () => void;
+  onNavigateToItemDetail: (id: number) => void;
   isDarkMode: boolean;
 }
 
@@ -33,7 +34,7 @@ const galleryConfig: { [key: string]: { title: string; description: string; subC
   }
 };
 
-const GalleryPage: React.FC<GalleryPageProps> = ({ categoryKey, onNavigateBack, isDarkMode }) => {
+const GalleryPage: React.FC<GalleryPageProps> = ({ categoryKey, onNavigateBack, onNavigateToItemDetail, isDarkMode }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -76,7 +77,7 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ categoryKey, onNavigateBack, 
         <section className="mb-20 pt-12">
            <button onClick={onNavigateBack} className="flex items-center text-gray-500 dark:text-gray-400 hover:text-gold transition-colors duration-300 mb-6 group">
                 <ChevronLeftIcon />
-                <span className="ml-2 font-semibold group-hover:underline">Kembali ke Beranda</span>
+                <span className="ml-2 font-semibold group-hover:underline">Kembali ke Halaman Layanan</span>
             </button>
           <div className="text-center">
              <h1 className="text-4xl md:text-6xl font-bold text-navy dark:text-white mb-4 transition-colors duration-1000">
@@ -94,10 +95,12 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ categoryKey, onNavigateBack, 
                 <h2 className="text-3xl md:text-4xl font-bold text-gold mb-4 text-center">{group.title}</h2>
                 <ImageSlider 
                     items={group.items.map(item => ({
+                        id: item.id,
                         title: item.title,
                         imageUrl: item.imageUrl,
                         category: group.title
-                    }))} 
+                    }))}
+                    onItemClick={(item) => onNavigateToItemDetail(item.id)}
                 />
              </section>
           ))}

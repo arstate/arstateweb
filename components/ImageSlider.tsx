@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from './icons';
 
 // A generic interface for items the slider can display
 interface SlideItem {
+  id: number;
   title: string;
   imageUrl: string;
   category?: string;
@@ -12,9 +13,10 @@ interface SlideItem {
 
 interface ImageSliderProps {
   items: SlideItem[];
+  onItemClick?: (item: SlideItem) => void;
 }
 
-const ImageSlider: React.FC<ImageSliderProps> = ({ items }) => {
+const ImageSlider: React.FC<ImageSliderProps> = ({ items, onItemClick }) => {
   if (!items || items.length === 0) {
     return <div className="text-center p-8 text-gray-500 dark:text-gray-400">Tidak ada karya untuk ditampilkan di kategori ini.</div>;
   }
@@ -23,7 +25,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ items }) => {
   
   const getLoopedItems = () => {
       if (originalLength === 0) return [];
-      // To ensure the looping effect works visually, we need at least 3 items in the array for the sides.
+      // To ensure the looping effect works visually, we need at least 5 items in the array for the sides.
       let looped = [...items];
       while (looped.length < 5) {
         looped = [...looped, ...items];
@@ -133,8 +135,13 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ items }) => {
             return (
               <div
                 key={index}
-                className="absolute w-[60%] sm:w-[45%] md:w-[35%] lg:w-[25%] aspect-[2/3] max-w-[320px] cursor-pointer"
+                className={`absolute w-[60%] sm:w-[45%] md:w-[35%] lg:w-[25%] aspect-[2/3] max-w-[320px] ${isCenter && onItemClick ? 'cursor-pointer' : ''}`}
                 style={transformStyle}
+                onClick={() => {
+                  if (isCenter && onItemClick) {
+                    onItemClick(project);
+                  }
+                }}
               >
                 <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl shadow-black/40">
                     <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />

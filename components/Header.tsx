@@ -5,7 +5,7 @@ import { MoonIcon, SunIcon, MenuIcon } from './icons';
 interface HeaderProps {
   isDarkMode: boolean;
   toggleDarkMode: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  page: 'home' | 'about' | 'gallery';
+  page: 'home' | 'about' | 'gallery' | 'itemDetail';
   setPage: (page: 'home' | 'about' | 'gallery') => void;
   setScrollToSection: (sectionId: string | null) => void;
   smoothScrollTo: (id: string) => void;

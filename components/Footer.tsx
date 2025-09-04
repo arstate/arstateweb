@@ -4,7 +4,7 @@ import { InstagramIcon, FacebookIcon, TwitterIcon } from './icons';
 
 interface FooterProps {
     smoothScrollTo: (id: string) => void;
-    setPage: (page: 'home' | 'about' | 'gallery') => void;
+    setPage: (page: 'home' | 'about' | 'gallery' | 'itemDetail') => void;
     setScrollToSection: (sectionId: string | null) => void;
 }
 

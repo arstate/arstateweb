@@ -11,11 +11,13 @@ import Footer from './components/Footer';
 import AskAI from './components/AskAI';
 import AboutPage from './components/AboutPage';
 import GalleryPage from './components/GalleryPage';
+import ItemDetailPage from './components/ItemDetailPage';
 
 const App: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [page, setPage] = useState<'home' | 'about' | 'gallery'>('home');
+  const [page, setPage] = useState<'home' | 'about' | 'gallery' | 'itemDetail'>('home');
   const [selectedGalleryCategory, setSelectedGalleryCategory] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [scrollToSection, setScrollToSection] = useState<string | null>(null);
 
   useEffect(() => {
@@ -124,6 +126,11 @@ const App: React.FC = () => {
     setSelectedGalleryCategory(category);
     setPage('gallery');
   }
+
+  const handleNavigateToItemDetail = (itemId: number) => {
+    setSelectedItemId(itemId);
+    setPage('itemDetail');
+  };
   
   const renderPage = () => {
     switch(page) {
@@ -144,8 +151,14 @@ const App: React.FC = () => {
         return <GalleryPage 
                   categoryKey={selectedGalleryCategory!} 
                   onNavigateBack={() => setPage('home')}
+                  onNavigateToItemDetail={handleNavigateToItemDetail}
                   isDarkMode={isDarkMode}
                />
+      case 'itemDetail':
+        return <ItemDetailPage
+                  itemId={selectedItemId!}
+                  onNavigateBack={() => setPage('gallery')}
+                />
       default:
         return null;
     }
