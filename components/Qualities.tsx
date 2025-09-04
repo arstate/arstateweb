@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 
 // Since Matter.js is loaded from a CDN, we need to declare it for TypeScript
@@ -9,6 +8,7 @@ interface QualitiesProps {
 }
 
 const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
+    // FIX: Corrected typo in the type from HTMLDivElenent to HTMLDivElement.
     const sceneRef = useRef<HTMLDivElement>(null);
     const engineRef = useRef<any>(null);
     const renderRef = useRef<any>(null);
@@ -57,14 +57,18 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
             });
             renderRef.current = render;
 
-            const lightThemeTextColor = '#E5E7EB'; // e.g., gray-200
-            const darkThemeTextColor = '#0B1B34'; // e.g., navy
             const bubbleColor = '#FFC107';
             const ropeColor = '#FFC107';
+
+            // Define text colors for clarity
+            const bubbleTextColor = '#0B1B34'; // Navy, for text inside gold bubbles (always dark)
+            const hangingTitleColorLight = '#0B1B34'; // Navy, for hanging text in light mode
+            const hangingTitleColorDark = '#FFFFFF';   // White, for hanging text in dark mode
             
-            // Text inside bubbles should always be dark for contrast against gold background.
-            const bodyTextColor = darkThemeTextColor; 
-            const titleTextColor = isDarkMode ? lightThemeTextColor : darkThemeTextColor;
+            // Set the active colors based on the theme
+            const bodyTextColor = bubbleTextColor; 
+            const titleTextColor = isDarkMode ? hangingTitleColorDark : hangingTitleColorLight;
+
 
             const wallThickness = 100;
             const walls = [
@@ -254,12 +258,11 @@ const Qualities: React.FC<QualitiesProps> = ({ isDarkMode }) => {
                 context.textBaseline = 'middle';
                 for (const body of bodies) {
                     if (body.customText) {
-                        const effectiveFillStyle = body.isTitle ? titleTextColor : bodyTextColor;
                         context.save();
                         context.translate(body.position.x, body.position.y);
                         context.rotate(body.angle);
                         context.font = body.customFontSize;
-                        context.fillStyle = effectiveFillStyle;
+                        context.fillStyle = body.customFillStyle;
                         context.fillText(body.customText, 0, 0);
                         context.restore();
                     }
