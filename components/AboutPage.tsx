@@ -43,10 +43,25 @@ const philosophies = [
 
 const AboutPage: React.FC<AboutPageProps> = ({ isDarkMode }) => {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [isAnimating, setIsAnimating] = useState(false);
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    const handlePhilosophyClick = (index: number) => {
+        if (isAnimating || index === activeIndex) {
+            return; // Prevent clicks during animation or on the already active item
+        }
+        setActiveIndex(index);
+        setIsAnimating(true);
+
+        // Disable clicks for the duration of the animation
+        setTimeout(() => {
+            setIsAnimating(false);
+        }, 700); // Must match the CSS transition duration (duration-700)
+    };
+
 
   return (
     <div className="min-h-screen text-gray-700 dark:text-gray-300 font-sans bg-white dark:bg-navy animate-fadeIn transition-colors duration-1000">
@@ -90,9 +105,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ isDarkMode }) => {
                                 return (
                                 <div
                                     key={p.title}
-                                    onClick={() => setActiveIndex(index)}
+                                    onClick={() => handlePhilosophyClick(index)}
                                     className={`
-                                        relative rounded-2xl p-4 overflow-hidden cursor-pointer
+                                        relative rounded-2xl p-4 overflow-hidden
                                         border 
                                         transition-all duration-700 ease-in-out
                                         
@@ -104,6 +119,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ isDarkMode }) => {
                                             ? 'bg-gray-50 dark:bg-navy-card border-gold shadow-[0_0_15px_5px_rgba(255,193,7,0.3)]' 
                                             : 'bg-gray-100/50 dark:bg-navy-card/50 hover:bg-gray-100/80 dark:hover:bg-navy-card/80 border-gray-300/50 dark:border-blue-500/50'
                                         }
+                                        ${isAnimating ? 'cursor-wait pointer-events-none' : 'cursor-pointer'}
                                     `}
                                 >
                                     <div className="w-full md:w-[330px] h-full flex flex-col justify-start">
