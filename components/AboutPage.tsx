@@ -96,7 +96,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ isDarkMode }) => {
                                         border 
                                         transition-all duration-700 ease-in-out
                                         
-                                        w-full ${isActive ? 'h-40' : 'h-16'}
+                                        w-full ${isActive ? 'h-52' : 'h-16'}
                                         md:h-full ${isActive ? 'md:w-[380px]' : 'md:w-[80px]'}
 
                                         ${
