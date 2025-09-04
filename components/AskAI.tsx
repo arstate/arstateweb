@@ -187,7 +187,7 @@ Kami selalu memiliki rencana cadangan. Kami akan berdiskusi dengan Anda untuk me
                     ${isOpen ? 'opacity-0 -translate-x-4 pointer-events-none' : 'opacity-100 translate-x-0'}
                 `}
             >
-                <p className="text-2xl font-bold text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.15)] dark:[text-shadow:none] group-hover:text-gold transition-all duration-300 group-hover:drop-shadow-[0_1px_4px_rgba(255,193,7,0.5)]">
+                <p className="text-2xl font-bold text-gray-600 dark:text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.15)] dark:[text-shadow:none] group-hover:text-gold transition-all duration-300 group-hover:drop-shadow-[0_1px_4px_rgba(255,193,7,0.5)]">
                     AI.
                 </p>
             </div>
@@ -199,7 +199,7 @@ Kami selalu memiliki rencana cadangan. Kami akan berdiskusi dengan Anda untuk me
                     transition-all duration-500 ease-in-out origin-bottom-right
                     ${isOpen 
                         ? 'w-96 max-w-[calc(100vw-4rem)] h-[600px] max-h-[70vh] rounded-2xl bg-white/80 dark:bg-white/5 backdrop-blur-lg shadow-2xl shadow-gold/25 border-2 border-gold' 
-                        : 'w-16 h-16 rounded-[2rem] bg-white shadow-lg cursor-pointer transform group-hover:scale-110 group-hover:bg-gold group-hover:shadow-xl group-hover:shadow-gold/30'
+                        : 'w-16 h-16 rounded-[2rem] bg-gray-600 dark:bg-white shadow-lg cursor-pointer transform group-hover:scale-110 group-hover:bg-gold group-hover:shadow-xl group-hover:shadow-gold/30'
                     }
                 `}
                 onClick={!isOpen ? toggleChat : undefined}

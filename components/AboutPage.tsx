@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 interface AboutPageProps {
@@ -85,29 +84,34 @@ const AboutPage: React.FC<AboutPageProps> = ({ isDarkMode }) => {
                  <div className="order-2 flex justify-center md:justify-end">
                     <div>
                         <h2 className="text-3xl font-bold text-gold mb-4 text-center md:text-left">Filosofi Kami</h2>
-                        <div className="flex justify-center md:justify-start h-[250px] md:h-[220px] gap-2">
-                            {philosophies.map((p, index) => (
+                        <div className="w-full flex flex-col md:flex-row md:justify-start md:h-[180px] gap-2">
+                            {philosophies.map((p, index) => {
+                                const isActive = index === activeIndex;
+                                return (
                                 <div
                                     key={p.title}
                                     onClick={() => setActiveIndex(index)}
-                                    style={{ width: index === activeIndex ? '380px' : '80px' }}
                                     className={`
                                         relative rounded-2xl p-4 overflow-hidden cursor-pointer
                                         border 
                                         transition-all duration-700 ease-in-out
+                                        
+                                        w-full ${isActive ? 'h-40' : 'h-16'}
+                                        md:h-full ${isActive ? 'md:w-[380px]' : 'md:w-[80px]'}
+
                                         ${
-                                            index === activeIndex 
+                                            isActive 
                                             ? 'bg-gray-50 dark:bg-navy-card border-gold shadow-[0_0_15px_5px_rgba(255,193,7,0.3)]' 
                                             : 'bg-gray-100/50 dark:bg-navy-card/50 hover:bg-gray-100/80 dark:hover:bg-navy-card/80 border-gray-300/50 dark:border-blue-500/50'
                                         }
                                     `}
                                 >
-                                    <div className="w-[330px] h-full flex flex-col justify-center">
+                                    <div className="w-full md:w-[330px] h-full flex flex-col justify-start">
                                         <h3 className="text-2xl font-bold text-navy dark:text-white mb-3 whitespace-nowrap transition-colors duration-1000">{p.title}</h3>
                                         <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-base transition-colors duration-1000">{p.description}</p>
                                     </div>
                                 </div>
-                            ))}
+                            )})}
                         </div>
                     </div>
                 </div>
